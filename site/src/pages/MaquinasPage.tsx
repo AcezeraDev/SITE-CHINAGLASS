@@ -1,6 +1,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ArrowRight, ArrowUpRight, Camera, FileImage, Maximize2, Play, Rotate3d, Search, X } from "lucide-react"
 import { Ampliar } from "@/components/Ampliar"
+import { VerNaFabrica } from "@/components/VerNaFabrica"
 import { Cursor } from "@/components/Cursor"
 import { PageHero } from "@/components/PageHero"
 import { VideoModal } from "@/components/VideoModal"
@@ -99,6 +100,13 @@ const MODELO_DA_MAQUINA: Partial<Record<string, Modelo3D>> = {
   TDS6AQK95: "laminado",
   "7YJ88YDUV": "corte-3em1",
 }
+// máquinas (pelo código) com modelo para realidade aumentada, gerado em /exportar-ar.html
+const AR_DA_MAQUINA: Partial<Record<string, string>> = {
+  "7YJ88YDUV-LOS9M9NMH": "/modelos/mesa-corte-cnc.glb",
+}
+/** Lê ?maquina= (link do QR Code da realidade aumentada) para abrir a ficha direto */
+const maquinaDaUrl = () => MAQUINAS.find((m) => m.id === new URLSearchParams(window.location.search).get("maquina")) ?? null
+const arNaUrl = () => new URLSearchParams(window.location.search).has("ar")
 const EM_3D = -1 // item da tela cheia quando é o modelo 3D
 const etiqueta =
   "pointer-events-none absolute top-3 z-10 flex items-center gap-1.5 rounded-full border border-white/10 bg-ink/60 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-ice backdrop-blur-md"
@@ -114,6 +122,7 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
   const [ampliado, setAmpliado] = useState<number | null>(null)
   const qual = MODELO_DA_MAQUINA[m.codigo]
   const Modelo = qual && MODELOS_3D[qual]
+  const ar = AR_DA_MAQUINA[m.codigo]
   const ficha = FICHAS_TECNICAS[m.id]
   const recursos = ficha?.recursos ?? m.destaques.split("; ").filter(Boolean).map(cap)
 
@@ -208,17 +217,27 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
               ))}
             </div>
           )}
-          {m.videos.length > 0 && (
-            <button
-              onClick={() => onVideo(m.videos[0])}
-              className="group flex cursor-pointer items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-left transition-colors hover:border-ice/40"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink">
-                <Play className="ml-0.5 h-4 w-4 fill-current" />
-              </span>
-              <span className="text-sm text-white">{t("Ver a máquina funcionando")}</span>
-            </button>
-          )}
+          <div className={cn("grid gap-3", ar && m.videos.length > 0 && "sm:grid-cols-2")}>
+            {m.videos.length > 0 && (
+              <button
+                onClick={() => onVideo(m.videos[0])}
+                className="group flex cursor-pointer items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-left transition-colors hover:border-ice/40"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-ink">
+                  <Play className="ml-0.5 h-4 w-4 fill-current" />
+                </span>
+                <span className="text-sm text-white">{t("Ver a máquina funcionando")}</span>
+              </button>
+            )}
+            {ar && (
+              <VerNaFabrica
+                src={ar}
+                nome={t(m.nome)}
+                link={`${window.location.origin}/maquinas?maquina=${m.id}&ar=1`}
+                destaque={arNaUrl()}
+              />
+            )}
+          </div>
         </div>
 
         <div className={cn("flex flex-col p-6 pt-2 md:p-9", Modelo ? "md:pt-3" : "md:pl-3")}>
@@ -364,7 +383,7 @@ function Catalogo({ onQuote }: { onQuote: (m: MaquinaCatalogo) => void }) {
   const root = useRef<HTMLElement>(null)
   const [linha, setLinha] = useState(linhaDaUrl)
   const [busca, setBusca] = useState("")
-  const [aberta, setAberta] = useState<MaquinaCatalogo | null>(null)
+  const [aberta, setAberta] = useState<MaquinaCatalogo | null>(maquinaDaUrl)
   const [video, setVideo] = useState<string | null>(null)
   const fechar = useCallback(() => setAberta(null), [])
   const fecharVideo = useCallback(() => setVideo(null), [])

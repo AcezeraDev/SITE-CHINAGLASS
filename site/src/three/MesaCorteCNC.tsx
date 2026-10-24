@@ -354,7 +354,7 @@ function Portico({ m, animado, pos, feitos }: { m: Mats; animado: boolean; pos: 
   )
 }
 
-function Mesa({ animado }: { animado: boolean }) {
+export function Mesa({ animado }: { animado: boolean }) {
   const m = useMats()
   const rig = useRef<THREE.Group>(null)
   const pos = useMemo(() => ({ x: -0.6, z: 0.2 }), [])
