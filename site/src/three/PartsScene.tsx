@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Environment, Float, Lightformer } from "@react-three/drei"
 import * as THREE from "three"
 import { pointer, prefersReducedMotion, scrollState } from "@/lib/motion"
+import { useCanvasNaTela } from "@/lib/webgl"
 
 /* ---------- engrenagem: perfil de dentes trapezoidais, extrudado ---------- */
 
@@ -159,45 +160,43 @@ function Parts({ mobile }: { mobile: boolean }) {
 
 export default function PartsScene() {
   const wrap = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(true)
+  const { montar, vigiar } = useCanvasNaTela(wrap, { inicial: true })
   const [mobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768)
   const reduced = prefersReducedMotion()
 
   useEffect(() => {
     const el = wrap.current
     if (!el) return
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting))
-    io.observe(el)
     // no celular o canvas às vezes mede o tamanho antes do layout assentar: força uma nova medição
     const t = setTimeout(() => window.dispatchEvent(new Event("resize")), 400)
-    return () => {
-      io.disconnect()
-      clearTimeout(t)
-    }
+    return () => clearTimeout(t)
   }, [])
 
   return (
     <div ref={wrap} className="absolute inset-0" aria-hidden="true">
-      <Canvas
-        dpr={[1, 1.75]}
-        camera={{ position: [0, 0, 7], fov: 38 }}
-        gl={{ antialias: true, alpha: true }}
-        frameloop={visible && !reduced ? "always" : "demand"}
-        onCreated={({ gl }) => {
-          gl.toneMapping = THREE.ACESFilmicToneMapping
-          gl.toneMappingExposure = 1.1
-        }}
-      >
-        <Environment resolution={256} frames={1}>
-          <Lightformer form="rect" intensity={6} position={[0, 5, 2]} rotation-x={Math.PI / 2} scale={[10, 2, 1]} />
-          <Lightformer form="rect" intensity={4} color="#8fe9ff" position={[-5, 0, 2]} rotation-y={Math.PI / 2} scale={[6, 1, 1]} />
-          <Lightformer form="rect" intensity={4} color="#2f7bff" position={[5, -1, 2]} rotation-y={-Math.PI / 2} scale={[6, 1, 1]} />
-          <Lightformer form="ring" intensity={5} position={[2, 2, 5]} scale={1.5} />
-          <Lightformer form="rect" intensity={1.5} color="#9fb4d6" position={[0, -5, 0]} rotation-x={-Math.PI / 2} scale={[12, 12, 1]} />
-          <Lightformer form="rect" intensity={2.5} position={[0, 0, 8]} scale={[10, 6, 1]} />
-        </Environment>
-        <Parts mobile={mobile} />
-      </Canvas>
+      {montar && (
+        <Canvas
+          dpr={[1, 1.75]}
+          camera={{ position: [0, 0, 7], fov: 38 }}
+          gl={{ antialias: true, alpha: true }}
+          frameloop={reduced ? "demand" : "always"}
+          onCreated={({ gl }) => {
+            vigiar(gl)
+            gl.toneMapping = THREE.ACESFilmicToneMapping
+            gl.toneMappingExposure = 1.1
+          }}
+        >
+          <Environment resolution={256} frames={1}>
+            <Lightformer form="rect" intensity={6} position={[0, 5, 2]} rotation-x={Math.PI / 2} scale={[10, 2, 1]} />
+            <Lightformer form="rect" intensity={4} color="#8fe9ff" position={[-5, 0, 2]} rotation-y={Math.PI / 2} scale={[6, 1, 1]} />
+            <Lightformer form="rect" intensity={4} color="#2f7bff" position={[5, -1, 2]} rotation-y={-Math.PI / 2} scale={[6, 1, 1]} />
+            <Lightformer form="ring" intensity={5} position={[2, 2, 5]} scale={1.5} />
+            <Lightformer form="rect" intensity={1.5} color="#9fb4d6" position={[0, -5, 0]} rotation-x={-Math.PI / 2} scale={[12, 12, 1]} />
+            <Lightformer form="rect" intensity={2.5} position={[0, 0, 8]} scale={[10, 6, 1]} />
+          </Environment>
+          <Parts mobile={mobile} />
+        </Canvas>
+      )}
     </div>
   )
 }

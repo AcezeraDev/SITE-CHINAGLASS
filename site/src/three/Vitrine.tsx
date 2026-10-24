@@ -5,6 +5,7 @@ import { Minus, Plus } from "lucide-react"
 import * as THREE from "three"
 import { t } from "@/i18n"
 import { prefersReducedMotion } from "@/lib/motion"
+import { useCanvasNaTela } from "@/lib/webgl"
 
 /*
  * Palco comum dos modelos 3D de máquinas: luzes, sombra no chão, câmera enquadrada e arrasto para girar.
@@ -119,7 +120,7 @@ function Aproximar({ acao, alvo, limites }: { acao: RefObject<(f: number) => voi
   return null
 }
 
-/** Canvas do modelo: só anima perto da tela; no celular não tem arrasto (a página rola por cima) */
+/** Canvas do modelo: só existe perto da tela (ver useCanvasNaTela); no celular não tem arrasto (a página rola por cima) */
 export function Vitrine({
   label,
   alvo,
@@ -140,7 +141,7 @@ export function Vitrine({
   children: (animado: boolean) => ReactNode
 }) {
   const wrap = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
+  const { montar, vigiar } = useCanvasNaTela(wrap)
   const [toque] = useState(() => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches)
   const reduced = prefersReducedMotion()
   const inicio = useMemo(() => alvo.clone().addScaledVector(direcao.clone().normalize(), 10), [alvo, direcao])
@@ -149,58 +150,51 @@ export function Vitrine({
   const aproximar = useRef<(f: number) => void>(() => {})
   const controles = !toque || zoom === "total"
 
-  useEffect(() => {
-    const el = wrap.current
-    if (!el) return
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), {
-      rootMargin: "200px",
-    })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-
   return (
     <div ref={wrap} className={className}>
       <div className="h-full w-full" role="img" aria-label={label}>
-        <Canvas
-          shadows
-          dpr={[1, 1.75]}
-          camera={{ position: inicio.toArray(), fov: 30 }}
-          gl={{ antialias: true, alpha: true }}
-          frameloop={visible && !reduced ? "always" : "demand"}
-          onCreated={({ gl }) => {
-            gl.toneMapping = THREE.ACESFilmicToneMapping
-            gl.toneMappingExposure = 1.05
-          }}
-          className={controles ? "cursor-grab active:cursor-grabbing" : undefined}
-        >
-          <ambientLight intensity={0.35} />
-          <directionalLight position={[-4, 7, 5]} intensity={1.6} castShadow shadow-mapSize={[1024, 1024]} />
-          {/* contraluz: a traseira e a lateral direita também ficam legíveis ao girar */}
-          <directionalLight position={[5, 5, -6]} intensity={1.1} />
-          <Environment resolution={256} frames={1}>
-            <Lightformer form="rect" intensity={4} position={[0, 6, 2]} rotation-x={Math.PI / 2} scale={[10, 3, 1]} />
-            <Lightformer form="rect" intensity={2.5} color="#8fe9ff" position={[-6, 2, 2]} rotation-y={Math.PI / 2} scale={[6, 2, 1]} />
-            <Lightformer form="rect" intensity={2} color="#2f7bff" position={[6, 1, 0]} rotation-y={-Math.PI / 2} scale={[6, 2, 1]} />
-            <Lightformer form="rect" intensity={2} position={[0, 1, 9]} scale={[10, 5, 1]} />
-            <Lightformer form="rect" intensity={2} position={[0, 1, -9]} rotation-y={Math.PI} scale={[10, 5, 1]} />
-          </Environment>
+        {montar && (
+          <Canvas
+            shadows
+            dpr={[1, 1.75]}
+            camera={{ position: inicio.toArray(), fov: 30 }}
+            gl={{ antialias: true, alpha: true }}
+            frameloop={reduced ? "demand" : "always"}
+            onCreated={({ gl }) => {
+              vigiar(gl)
+              gl.toneMapping = THREE.ACESFilmicToneMapping
+              gl.toneMappingExposure = 1.05
+            }}
+            className={controles ? "cursor-grab active:cursor-grabbing" : undefined}
+          >
+            <ambientLight intensity={0.35} />
+            <directionalLight position={[-4, 7, 5]} intensity={1.6} castShadow shadow-mapSize={[1024, 1024]} />
+            {/* contraluz: a traseira e a lateral direita também ficam legíveis ao girar */}
+            <directionalLight position={[5, 5, -6]} intensity={1.1} />
+            <Environment resolution={256} frames={1}>
+              <Lightformer form="rect" intensity={4} position={[0, 6, 2]} rotation-x={Math.PI / 2} scale={[10, 3, 1]} />
+              <Lightformer form="rect" intensity={2.5} color="#8fe9ff" position={[-6, 2, 2]} rotation-y={Math.PI / 2} scale={[6, 2, 1]} />
+              <Lightformer form="rect" intensity={2} color="#2f7bff" position={[6, 1, 0]} rotation-y={-Math.PI / 2} scale={[6, 2, 1]} />
+              <Lightformer form="rect" intensity={2} position={[0, 1, 9]} scale={[10, 5, 1]} />
+              <Lightformer form="rect" intensity={2} position={[0, 1, -9]} rotation-y={Math.PI} scale={[10, 5, 1]} />
+            </Environment>
 
-          {children(!reduced)}
-          <Enquadrar alvo={alvo} raio={raio} direcao={direcao} limites={limites} />
-          {zoom && <Aproximar acao={aproximar} alvo={alvo} limites={limites} />}
-          <ContactShadows position={[0, 0, 0]} opacity={0.55} scale={sombra} blur={2.4} far={3} color="#000814" />
+            {children(!reduced)}
+            <Enquadrar alvo={alvo} raio={raio} direcao={direcao} limites={limites} />
+            {zoom && <Aproximar acao={aproximar} alvo={alvo} limites={limites} />}
+            <ContactShadows position={[0, 0, 0]} opacity={0.55} scale={sombra} blur={2.4} far={3} color="#000814" />
 
-          {controles && (
-            <OrbitControls
-              makeDefault
-              enableZoom={zoom === "total"}
-              enablePan={zoom === "total"}
-              minPolarAngle={Math.PI * 0.08}
-              maxPolarAngle={Math.PI * 0.47}
-            />
-          )}
-        </Canvas>
+            {controles && (
+              <OrbitControls
+                makeDefault
+                enableZoom={zoom === "total"}
+                enablePan={zoom === "total"}
+                minPolarAngle={Math.PI * 0.08}
+                maxPolarAngle={Math.PI * 0.47}
+              />
+            )}
+          </Canvas>
+        )}
       </div>
       {zoom && (
         <div className="absolute bottom-3 right-3 z-20 flex gap-1.5">

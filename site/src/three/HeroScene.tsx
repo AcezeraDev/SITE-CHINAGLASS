@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Environment, Float, Lightformer, MeshTransmissionMaterial } from "@react-three/drei"
 import * as THREE from "three"
 import { pointer, prefersReducedMotion, scrollState } from "@/lib/motion"
+import { useCanvasNaTela } from "@/lib/webgl"
 
 /* ---------- Fundo: fachada de vidro em perspectiva, com reflexo passando pelos painéis ---------- */
 
@@ -387,37 +388,32 @@ function StudioLights() {
 
 export default function HeroScene() {
   const wrap = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(true)
+  // acima da dobra: começa montado
+  const { montar, vigiar } = useCanvasNaTela(wrap, { margem: "100px", inicial: true })
   const [mobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768)
   const reduced = prefersReducedMotion()
 
-  // pausa a renderização quando o hero sai da tela
-  useEffect(() => {
-    const el = wrap.current
-    if (!el) return
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { rootMargin: "100px" })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-
   return (
     <div ref={wrap} className="absolute inset-0" aria-hidden="true">
-      <Canvas
-        dpr={[1, mobile ? 1.5 : 1.75]}
-        camera={{ position: [0, 0, 6], fov: 40 }}
-        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
-        frameloop={visible && !reduced ? "always" : "demand"}
-        onCreated={({ gl }) => {
-          gl.toneMapping = THREE.ACESFilmicToneMapping
-          gl.toneMappingExposure = 1.15
-        }}
-      >
-        <CausticBackground mobile={mobile} />
-        <StudioLights />
-        <Dust count={mobile ? 260 : 650} />
-        <Shards count={mobile ? 7 : 14} />
-        <Diamond mobile={mobile} />
-      </Canvas>
+      {montar && (
+        <Canvas
+          dpr={[1, mobile ? 1.5 : 1.75]}
+          camera={{ position: [0, 0, 6], fov: 40 }}
+          gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+          frameloop={reduced ? "demand" : "always"}
+          onCreated={({ gl }) => {
+            vigiar(gl)
+            gl.toneMapping = THREE.ACESFilmicToneMapping
+            gl.toneMappingExposure = 1.15
+          }}
+        >
+          <CausticBackground mobile={mobile} />
+          <StudioLights />
+          <Dust count={mobile ? 260 : 650} />
+          <Shards count={mobile ? 7 : 14} />
+          <Diamond mobile={mobile} />
+        </Canvas>
+      )}
     </div>
   )
 }

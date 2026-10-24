@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { ContactShadows, Environment, Grid, Lightformer, PerformanceMonitor } from "@react-three/drei"
 import * as THREE from "three"
 import { pointer, scrollState } from "@/lib/motion"
+import { useCanvasNaTela } from "@/lib/webgl"
 import { CORTE0, CORTES, FIM, PLANO, tempoDaJornada } from "./jumboTempo"
 import { Linha } from "./LinhaCorteJumbo"
 
@@ -41,7 +42,12 @@ const ROTEIRO: Plano[] = [
 const CABECA_Y = 0.95 // altura da roda de corte sobre a chapa (m)
 const ASPECTO_BASE = 1.6 // proporção de tela em que as lentes foram escolhidas
 
-const curva = (pts: [number, number, number][]) => new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p)), false, "centripetal")
+const curva = (pts: [number, number, number][]) =>
+  new THREE.CatmullRomCurve3(
+    pts.map((p) => new THREE.Vector3(...p)),
+    false,
+    "centripetal"
+  )
 const suaviza = (x: number) => x * x * (3 - 2 * x)
 
 /** progresso → plano atual e quanto falta para o próximo, com entrada e saída suaves entre planos */
@@ -126,59 +132,54 @@ function Camera() {
 
 export default function JornadaCorte() {
   const wrap = useRef<HTMLDivElement>(null)
-  const [visivel, setVisivel] = useState(false)
+  const { montar, vigiar } = useCanvasNaTela(wrap)
   const [dpr, setDpr] = useState(1.75)
-
-  useEffect(() => {
-    const el = wrap.current
-    if (!el) return
-    const io = new IntersectionObserver(([e]) => setVisivel(e.isIntersecting), { rootMargin: "200px" })
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
 
   return (
     <div ref={wrap} className="absolute inset-0" aria-hidden="true">
-      <Canvas
-        dpr={[1, dpr]}
-        camera={{ position: ROTEIRO[0].pos, fov: ROTEIRO[0].lente, near: 0.05, far: 80 }}
-        gl={{ antialias: true, alpha: true }}
-        // o movimento vem do scroll de quem lê, então segue rodando mesmo com movimento reduzido
-        frameloop={visivel ? "always" : "never"}
-        onCreated={({ gl }) => {
-          gl.toneMapping = THREE.ACESFilmicToneMapping
-          gl.toneMappingExposure = 1.05
-        }}
-      >
-        <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(1.75)} />
-        <ambientLight intensity={0.35} />
-        <directionalLight position={[-4, 8, 6]} intensity={1.6} />
-        <directionalLight position={[6, 5, -6]} intensity={1.0} />
-        <Environment resolution={256} frames={1}>
-          <Lightformer form="rect" intensity={4} position={[0, 7, 2]} rotation-x={Math.PI / 2} scale={[16, 4, 1]} />
-          <Lightformer form="rect" intensity={2.5} color="#8fe9ff" position={[-9, 2, 2]} rotation-y={Math.PI / 2} scale={[10, 2, 1]} />
-          <Lightformer form="rect" intensity={2} color="#2f7bff" position={[9, 1, 0]} rotation-y={-Math.PI / 2} scale={[10, 2, 1]} />
-          <Lightformer form="rect" intensity={2} position={[0, 1, 10]} scale={[16, 5, 1]} />
-        </Environment>
+      {montar && (
+        <Canvas
+          dpr={[1, dpr]}
+          camera={{ position: ROTEIRO[0].pos, fov: ROTEIRO[0].lente, near: 0.05, far: 80 }}
+          gl={{ antialias: true, alpha: true }}
+          // o movimento vem do scroll de quem lê, então segue rodando mesmo com movimento reduzido
+          frameloop="always"
+          onCreated={({ gl }) => {
+            vigiar(gl)
+            gl.toneMapping = THREE.ACESFilmicToneMapping
+            gl.toneMappingExposure = 1.05
+          }}
+        >
+          <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(1.75)} />
+          <ambientLight intensity={0.35} />
+          <directionalLight position={[-4, 8, 6]} intensity={1.6} />
+          <directionalLight position={[6, 5, -6]} intensity={1.0} />
+          <Environment resolution={256} frames={1}>
+            <Lightformer form="rect" intensity={4} position={[0, 7, 2]} rotation-x={Math.PI / 2} scale={[16, 4, 1]} />
+            <Lightformer form="rect" intensity={2.5} color="#8fe9ff" position={[-9, 2, 2]} rotation-y={Math.PI / 2} scale={[10, 2, 1]} />
+            <Lightformer form="rect" intensity={2} color="#2f7bff" position={[9, 1, 0]} rotation-y={-Math.PI / 2} scale={[10, 2, 1]} />
+            <Lightformer form="rect" intensity={2} position={[0, 1, 10]} scale={[16, 5, 1]} />
+          </Environment>
 
-        <Camera />
-        <Linha animado tempo={() => tempoDaJornada(scrollState.jornada)} />
-        <ContactShadows position={[0, 0.001, 0]} opacity={0.6} scale={20} blur={2.4} far={3} color="#000814" />
-        {/* piso técnico, como no resto do site */}
-        <Grid
-          position={[0, -0.01, 0]}
-          args={[30, 30]}
-          cellSize={0.5}
-          cellThickness={0.6}
-          cellColor="#14335f"
-          sectionSize={2.5}
-          sectionThickness={1}
-          sectionColor="#1f5aa8"
-          fadeDistance={22}
-          fadeStrength={2}
-          infiniteGrid
-        />
-      </Canvas>
+          <Camera />
+          <Linha animado tempo={() => tempoDaJornada(scrollState.jornada)} />
+          <ContactShadows position={[0, 0.001, 0]} opacity={0.6} scale={20} blur={2.4} far={3} color="#000814" />
+          {/* piso técnico, como no resto do site */}
+          <Grid
+            position={[0, -0.01, 0]}
+            args={[30, 30]}
+            cellSize={0.5}
+            cellThickness={0.6}
+            cellColor="#14335f"
+            sectionSize={2.5}
+            sectionThickness={1}
+            sectionColor="#1f5aa8"
+            fadeDistance={22}
+            fadeStrength={2}
+            infiniteGrid
+          />
+        </Canvas>
+      )}
     </div>
   )
 }
