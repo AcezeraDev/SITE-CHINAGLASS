@@ -1,0 +1,11 @@
+# dependências e build
+node_modules/
+dist/
+*.tsbuildinfo
+
+# ambiente e sistema
+.env*
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log

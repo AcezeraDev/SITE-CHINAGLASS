@@ -1,0 +1,342 @@
+{
+  "81770856": {
+    "resumo": "Linha integrada para alimentar, cortar e destacar chapas de vidro. Reúne três equipamentos e oferece configurações para chapas de 4200 × 2800 mm ou Jumbo de 6100 × 3300 mm.",
+    "aplicacoes": ["Corte de chapas em sequência", "Beneficiamento de grandes formatos"],
+    "funcionamento": "A carregadora retira a chapa por vácuo e a entrega à mesa CNC. Após o risco programado, o vidro segue para a mesa de destaque, com colchão de ar e barras acionadas por pedal.",
+    "recursos": ["Bomba de vácuo de 40 m³/h na carregadora.", "Corte com servomotores Yaskawa, guias Hiwin e controle Galil.", "Mesa de destaque com barras na disposição 1 + 2 e superfície com feltro."],
+    "especificacoes": [["Etapas da linha", "Carregamento + corte CNC + destaque"], ["Bomba de vácuo", "40 m³/h"]],
+    "dimensionamento": "Informe o formato e a espessura das chapas, o volume de corte e o espaço disponível. O layout completo e a infraestrutura devem considerar os três módulos da linha.",
+    "opcionais": ["Definir na proposta o software de otimização e sua licença: a página apresenta Optima ou Guiyou."]
+  },
+  "217194615": {
+    "resumo": "Linha automática dedicada ao corte de vidro laminado com intercamada PVB ou EVA. Combina risco nas duas faces, destaque e separação por aquecimento.",
+    "aplicacoes": ["Recorte de chapas laminadas", "Preparação de peças sob medida"],
+    "funcionamento": "O posicionamento por servo e a detecção de borda por fibra óptica orientam os cortadores superior e inferior. O sistema destaca as lâminas e aquece a região de corte para separar a intercamada.",
+    "recursos": ["Pressão do cortador inferior regulada por válvula proporcional.", "Lubrificação automática no corte e posicionamento sem medição manual da chapa."],
+    "especificacoes": [["Modelo", "3826"], ["Intercamada", "PVB ou EVA: 0,38 – 1,52 mm"], ["Paralelismo informado", "±0,20 mm/m"], ["Precisão diagonal informada", "±0,25 mm/m"], ["Altura da mesa", "900 ± 50 mm"], ["Área de instalação", "7500 × 5500 mm"]],
+    "observacoes": ["A página informa 3700 mm como dimensão máxima, sem detalhar a segunda dimensão. Confirmar o formato completo e as condições de medição da precisão."],
+    "dimensionamento": "Informe as espessuras de cada lâmina, o tipo e a espessura da intercamada e os formatos de entrada e saída. A faixa 3+3 a 10+10 mm se refere às lâminas de vidro."
+  },
+  "81769971": {
+    "resumo": "Mesa compacta 3 em 1 que reúne carregamento automático, corte CNC e destaque em uma área anunciada de 18 m².",
+    "aplicacoes": ["Corte de vidro plano", "Linhas com espaço limitado"],
+    "funcionamento": "O PLC controla o carregamento da chapa e o CNC executa o plano de corte. O colchão de ar auxilia o deslocamento do vidro na mesa e a função de destaque completa a sequência.",
+    "recursos": ["Posicionamento automático a laser.", "Movimentação por servomotores e cremalheiras.", "Software Optima básico informado como incluso."],
+    "especificacoes": [["Operações integradas", "Carregamento + corte + destaque"], ["Posicionamento", "Automático a laser"], ["Otimização", "Optima básico"]],
+    "opcionais": ["A versão de escritório do Optima e a marcação de ferragens não acompanham a versão básica, segundo a página do produto."],
+    "dimensionamento": "Solicite a faixa de espessura, o formato útil completo, a velocidade e os requisitos elétricos desta versão. Os dados das mesas XYZ e de 4200 mm não devem ser usados como especificação deste modelo."
+  },
+  "397708527": {
+    "resumo": "Mesa de corte CNC para chapas de vidro plano de até 4200 × 2800 mm, com posicionamento a laser e apoio por colchão de ar.",
+    "aplicacoes": ["Corte de grandes chapas", "Planos de corte otimizados"],
+    "funcionamento": "O controle CNC conduz o cabeçote segundo o plano de corte. O posicionamento automático referencia a chapa e o colchão de ar facilita sua movimentação sobre a mesa.",
+    "recursos": ["Servomotores e cremalheiras no sistema de movimentação.", "Controle PLC e CNC descrito na página.", "Optima básico incluso, conforme configuração anunciada."],
+    "especificacoes": [["Posicionamento", "Automático a laser"], ["Apoio da chapa", "Colchão de ar"]],
+    "observacoes": ["O título e a descrição principal informam 4200 × 2800 mm, mas um subtítulo menciona 3600 mm. Confirmar a configuração pelo código do produto."],
+    "opcionais": ["Optima de escritório e marcação de ferragens não acompanham o software básico."],
+    "dimensionamento": "Defina a espessura do vidro e confirme velocidade, precisão, potência e módulos de carregamento e destaque incluídos na proposta."
+  },
+  "344423780": {
+    "resumo": "Mesa CNC XYZ para vidro plano com área útil de corte de 3660 × 2400 mm e espessuras publicadas de 2 a 19 mm.",
+    "aplicacoes": ["Cortes retos", "Formatos programados em vidro plano"],
+    "funcionamento": "O software de otimização organiza o plano e o CNC posiciona o cabeçote. O sensor de borda referencia a chapa e a cabeça de corte de 360° acompanha os trajetos programados.",
+    "recursos": ["Software Optima e controlador CNC High Control Card.", "Sensor de borda Panasonic e ferramenta de corte Bohle.", "Controle remoto e plataforma antiestática descritos pelo fornecedor."],
+    "especificacoes": [["Eixos de corte", "X, Y e Z"], ["Cabeça de corte", "Rotação de 360°"], ["Dimensões", "Sob desenho do fornecedor"]],
+    "observacoes": ["A alimentação publicada é 380 V / 50 Hz. A configuração para a rede de 60 Hz deve ser definida na proposta; não se presume compatibilidade."],
+    "dimensionamento": "Informe os formatos e as espessuras usuais. A velocidade máxima de corte não equivale à produção de chapas prontas por hora, que também depende do plano e do destaque."
+  },
+  "384386974": {
+    "resumo": "Mesa CNC XYZ para vidro monolítico, anunciada com função de braço basculante para auxiliar o carregamento.",
+    "aplicacoes": ["Corte de vidro monolítico", "Carregamento com basculamento"],
+    "funcionamento": "O conjunto basculante auxilia a passagem da chapa para a posição de trabalho; o CNC conduz a operação de corte. O ciclo e os módulos fornecidos devem ser definidos para esta versão.",
+    "recursos": ["Função de braço basculante identificada no título do produto.", "Página de referência com fotos e vídeo da máquina."],
+    "especificacoes": [["Material anunciado", "Vidro monolítico"], ["Corte", "CNC XYZ"], ["Carregamento", "Função de braço basculante"]],
+    "observacoes": ["A página não publica uma tabela numérica em texto. Dimensões úteis, espessuras, velocidade, potência e capacidade de carga precisam de confirmação específica."],
+    "dimensionamento": "Envie os formatos de chapa, a faixa de espessura e o layout pretendido. Solicite a ficha da versão pelo código 7YJ88YDUV-YDI3O8WN8."
+  },
+  "355640119": {
+    "resumo": "Mesa CNC com basculamento para carregamento, destinada ao corte de vidro plano de 2 a 19 mm em formato útil de até 3660 × 2400 mm.",
+    "aplicacoes": ["Cortes retos e formatos", "Alimentação por mesa basculante"],
+    "funcionamento": "A mesa bascula para receber a chapa e retorna à posição de corte. O sensor de borda e a cabeça de 360° auxiliam a execução do plano controlado por CNC.",
+    "recursos": ["Software Optima para otimização do plano de corte.", "Servomotores, controle remoto e sensor de borda.", "Área ocupada anunciada de 18 m²; dimensões finais sob desenho."],
+    "especificacoes": [["Eixos de corte", "X, Y e Z"], ["Cabeça de corte", "Rotação de 360°"], ["Dimensões", "Sob desenho do fornecedor"]],
+    "observacoes": ["A página informa alimentação de 380 V / 50 Hz. Confirmar a versão elétrica para a instalação em 60 Hz."],
+    "dimensionamento": "Preveja espaço para o movimento de basculamento e para circulação das chapas. Confirme a carga admissível e o escopo dos sistemas de carregamento e destaque."
+  },
+  "355775590": {
+    "resumo": "Mesa semiautomática para corte de vidro laminado, com risco superior e inferior, destaque pneumático e aquecimento para separação.",
+    "aplicacoes": ["Corte de laminados sob medida", "Produção com operação assistida"],
+    "funcionamento": "Os cortadores trabalham em posições correspondentes nas duas faces. A ação pneumática auxilia o destaque e o aquecimento permite a separação da região cortada.",
+    "recursos": ["PLC Delta e interface touchscreen Haiwei na configuração publicada.", "Servomotor Huichuan e componentes pneumáticos AirTAC.", "Aquecimento infravermelho."],
+    "especificacoes": [["Precisão de corte informada", "≤ ±1 mm"], ["Precisão diagonal informada", "≤ ±2 mm/m"], ["Operação", "1 – 2 operadores, segundo o fornecedor"]],
+    "observacoes": ["Os formatos 2500 × 2000 mm e 3770 × 2550 mm são alternativas. Confirmar sua correspondência com SLM-2621 e SLM-3826 na proposta."],
+    "dimensionamento": "Informe a composição do laminado. A indicação 2+0,38+2 a 8+3,04+8 mm descreve vidro + intercamada + vidro; o ciclo anunciado depende da peça e da operação."
+  },
+  "211000219": {
+    "resumo": "Canteadeira automática para arredondar e acabar cantos de vidro, com detecção da peça e processamento sincronizado nos dois lados.",
+    "aplicacoes": ["Cantos arredondados", "Acabamento de peças de vidro plano"],
+    "funcionamento": "A detecção automática localiza o vidro. O servo ajusta a abertura do bloco e os cabeçotes pneumáticos executam o desbaste e o polimento com dois rebolos por mandril.",
+    "recursos": ["PLC com IHM touchscreen.", "Abertura e fechamento guiados por servo e guia linear.", "Bomba de óleo com lubrificação automática."],
+    "especificacoes": [["Raios de canto", "R5 a R60"], ["Raios fornecidos", "3 raios; definir quais na proposta"]],
+    "dimensionamento": "Escolha a largura de trabalho de 1000, 1600 ou 2300 mm e informe os raios necessários. A produção aproximada de 3 peças/min depende do formato e da operação."
+  },
+  "242693919": {
+    "resumo": "Lapidadora retilínea com 10 rebolos para acabamento de bordas de vidro plano. A tabela ilustrada do fornecedor inclui capacidade, velocidade e requisitos de instalação.",
+    "aplicacoes": ["Bordas retas", "Vidros para móveis e arquitetura"],
+    "funcionamento": "O transporte conduz a peça pelos rebolos. O CLP e o painel touchscreen exibem espessura, velocidade e contagem de peças, enquanto o inversor permite regular o avanço.",
+    "recursos": ["Vigas em caixa de aço e trilhos com revestimento de aço temperado.", "Transmissão por contato rolante, redutor e inversor.", "Carenagens inox e lubrificação integrada."],
+    "especificacoes": [["Espessura", "2 – 50 mm"], ["Vidro mínimo", "30 × 30 mm (tabela do fornecedor)"], ["Vidro máximo", "2500 × 3600 mm"], ["Velocidade", "0,5 – 7 m/min"], ["Potência", "25 kW"], ["Peso", "5500 kg"], ["Dimensões", "7200 × 1200 × 2500 mm"]],
+    "tabelaFonte": "https://cdn.awsli.com.br/564/564711/arquivos/parametros-t-cnicos.png",
+    "dimensionamento": "Confirme a fixação para peças mínimas, o perfil de borda pretendido e a tensão de alimentação. Os valores numéricos foram transcritos da tabela técnica em imagem da página deste modelo."
+  },
+  "26195533": {
+    "resumo": "Lapidadora copo ZM9325A de 9 rebolos com ajuste motorizado de espessura e leitura digital, indicada para alternar espessuras na produção de bordas retas.",
+    "aplicacoes": ["Lapidação retilínea", "Desbaste, polimento e chanfro"],
+    "funcionamento": "A chapa atravessa o conjunto de rebolos para executar as etapas de acabamento em uma passagem. O display auxilia o ajuste de espessura e o cavalete permite regular a entrada do vidro.",
+    "recursos": ["Motor de transporte de 2,2 kW com transmissão helicoidal.", "Último motor com duas velocidades para opções de polimento.", "Estrutura fundida e tanque de água em inox."],
+    "especificacoes": [["Potência do transporte", "2,2 kW; não corresponde à potência total"]],
+    "dimensionamento": "Informe o perfil de acabamento e as espessuras usuais. Confirme a potência total, o espaço de instalação e os rebolos incluídos; não usar os dados da versão PLC ou da ZM9325 como equivalentes."
+  },
+  "23523155": {
+    "resumo": "Lapidadora copo automática de 9 rebolos com cavalete ajustável e duas rotações no último motor para diferentes condições de polimento.",
+    "aplicacoes": ["Bordas retilíneas", "Acabamento de vidro extra clear"],
+    "funcionamento": "O transporte leva a peça pelas etapas de desbaste e polimento. O ajuste do cavalete auxilia a entrada e o último motor permite trabalhar com rebolo convencional ou impregnado com óxido de cério.",
+    "recursos": ["Último motor: 3400 rpm no polimento convencional ou 1700 rpm com óxido de cério.", "Estrutura fundida, suporte em alumínio e tanque inox."],
+    "especificacoes": [["Modelo", "ZM9325 (tabela ilustrada)"], ["Espessura", "3 – 25 mm (tabela)"], ["Vidro mínimo", "80 × 80 mm"], ["Velocidade", "0,8 – 8 m/min (tabela)"], ["Potência", "18,5 kW"], ["Peso", "2800 kg"], ["Dimensões", "6400 × 1000 × 2500 mm"]],
+    "tabelaFonte": "https://cdn.awsli.com.br/564/564711/arquivos/Lapidadora%20Chinesa%20informacoes%20tecnicas.jpg",
+    "observacoes": ["A descrição comercial cita até 10 m/min; a tabela ZM9325 informa 0,8 – 8 m/min. A velocidade aplicável deve constar na proposta."],
+    "dimensionamento": "Defina o acabamento esperado e a configuração do último rebolo. Para comparar produtividade, considere a espessura e o nível de polimento."
+  },
+  "299665459": {
+    "resumo": "Lapidadora copo de 9 rebolos com PLC e IHM Siemens, para processamento retilíneo de vidros de 3 a 25 mm.",
+    "aplicacoes": ["Lapidação de bordas retas", "Produção com controle por IHM"],
+    "funcionamento": "O painel centraliza os ajustes e o vidro avança pelo conjunto de rebolos para desbaste e acabamento da borda e dos filetes.",
+    "recursos": ["PLC e IHM Siemens com componentes elétricos Schneider.", "Carenagens inox na versão anunciada.", "Limites de remoção de material publicados para topo e filete."],
+    "especificacoes": [["Remoção máxima no topo", "3 mm"], ["Remoção máxima no filete", "2,5 mm"]],
+    "dimensionamento": "Informe as espessuras, o acabamento e a remoção de material pretendida. A faixa de avanço de 0,5 – 6 m/min é própria desta versão PLC e não deve ser substituída pela de outro modelo de 9 rebolos."
+  },
+  "277831702": {
+    "resumo": "Linha de lapidação bilateral com opções de 20 ou 24 motores e transferência em L ou em linha, destinada ao processamento de bordas opostas.",
+    "aplicacoes": ["Lapidação bilateral em sequência", "Integração de linhas de beneficiamento"],
+    "funcionamento": "Os lados paralelos passam pelas etapas de desbaste, acabamento e polimento pneumático. O transfer conduz a peça entre os equipamentos conforme o layout escolhido.",
+    "recursos": ["PLC Inovance com interface touchscreen MCGS.", "Autolimpeza da correia superior para remoção de partículas.", "Lubrificação automática, tanque inox e suporte central móvel."],
+    "especificacoes": [["Transferência", "Em L ou em linha"], ["Polimento", "Acionamento pneumático"], ["Lubrificação", "Automática"]],
+    "removerEspecificacoes": ["Tamanhos"],
+    "dimensionamento": "Defina a largura de trabalho de cada módulo e a composição de 20 ou 24 motores. Solicite espessuras, peças mínimas, velocidade e infraestrutura da linha completa; os 110 kW de outro produto bilateral não são automaticamente aplicáveis."
+  },
+  "34607018": {
+    "resumo": "Modeladora para lapidação e biselamento de vidros planos redondos, ovais ou irregulares, com mesa giratória e fixação a vácuo.",
+    "aplicacoes": ["Vidros redondos e ovais", "Bordas de formatos especiais"],
+    "funcionamento": "A operação é automática para peças redondas e manual para contornos especiais. O mandril permite ajustar a altura e a inclinação dos rebolos, com pressão pneumática regulável.",
+    "recursos": ["Mesa rotativa com 9 ventosas.", "Moto-mandril de duas velocidades e possibilidade de montagem de vários rebolos.", "Refrigeração dos rebolos por mangueira de água articulada."],
+    "especificacoes": [["Fixação", "9 ventosas na mesa rotativa"], ["Operação por formato", "Automática em peças redondas; manual em formatos especiais"], ["Mandril", "Duas velocidades, com ajuste de inclinação"]],
+    "dimensionamento": "Apresente um desenho da peça, o raio do contorno e o acabamento desejado. Confirme espessura admissível, dimensões mínimas e máximas e faixa de bisel para a ferramenta escolhida."
+  },
+  "25036002": {
+    "resumo": "Mesa Turnover para transferência automática de peças em linhas de lapidação, com faixa publicada de 350 × 350 a 3600 × 2400 mm.",
+    "aplicacoes": ["Transferência entre etapas", "Automação da movimentação em linha"],
+    "funcionamento": "O equipamento automatiza a transferência de peças entre etapas da linha. A sequência de movimentação deve ser compatibilizada com as máquinas de entrada e saída.",
+    "recursos": ["Cadência anunciada de 3 a 5 peças/min.", "Integração destinada a reduzir intervenções manuais repetitivas."],
+    "especificacoes": [["Função", "Transferência automática em linha de lapidação"]],
+    "dimensionamento": "Confirme a espessura e o peso das peças, a altura de transporte, o sentido do fluxo e o ciclo da linha. O desempenho depende também dos equipamentos conectados."
+  },
+  "180212740": {
+    "resumo": "Bilateral periférica anunciada em configurações de 8 ou 12 rebolos, com desenhos de implantação publicados pelo fornecedor.",
+    "aplicacoes": ["Acabamento de bordas opostas", "Linhas de lapidação periférica"],
+    "funcionamento": "O vidro é transportado entre os conjuntos de rebolos para processamento das bordas opostas. A composição e o perfil obtido dependem dos rebolos e da configuração da linha.",
+    "recursos": ["Alternativas de 8 e 12 rebolos.", "Layout de linha e desenho de ocupação disponíveis na página de referência."],
+    "especificacoes": [["Tecnologia", "Lapidação periférica bilateral"]],
+    "observacoes": ["A página publica layouts, mas não uma tabela numérica em texto. Não foram atribuídos a esta máquina os parâmetros da bilateral de 20 rebolos."],
+    "dimensionamento": "Solicite o formato útil, a peça mínima, a espessura, o perfil de borda, a velocidade e a potência da alternativa desejada. Envie o layout para definir o transfer e os módulos."
+  },
+  "91095488": {
+    "resumo": "Lapidadora bilateral de 20 rebolos, com 10 por lado, para desbaste e polimento das bordas opostas e dos filetes de vidro plano.",
+    "aplicacoes": ["Lapidação de peças retangulares", "Produção em escala de vidro plano"],
+    "funcionamento": "Os rebolos executam desbaste, acabamento e polimento enquanto o vidro avança. A IHM permite ajustar largura, espessura e levantamento dos filetes superiores.",
+    "recursos": ["Polimento pneumático e correção de posicionamento da peça.", "PLC Siemens e motores de lapidação ABB."],
+    "especificacoes": [["Tamanhos", "1500 / 2000 / 4200 mm (descrição técnica)"], ["Remoção máxima na borda", "2 mm por processamento"], ["Remoção máxima no filete", "3 mm por processamento"], ["Abertura do bloco", "Até 4 m/min"], ["Altura da mesa", "920 mm"]],
+    "observacoes": ["O título cita 2500 mm, mas a descrição técnica lista 2000 mm. Confirmar a largura da versão e se a potência publicada de 110 kW corresponde ao conjunto ofertado."],
+    "dimensionamento": "Defina as larguras dos módulos e a disposição da linha. Considere a alimentação 380 V / 60 Hz e ar comprimido de 0,4 – 0,6 MPa."
+  },
+  "81791287": {
+    "resumo": "Biseladora retilínea de 9 rebolos para produzir acabamento em bisotê nas bordas de vidros e espelhos.",
+    "aplicacoes": ["Bisotê em espelhos", "Acabamento decorativo em vidro"],
+    "funcionamento": "A peça avança pelo conjunto de rebolos, que realiza o acabamento da faixa de bisel. A versão de comando pode ser por display digital ou PLC Siemens.",
+    "recursos": ["Nove rebolos para a sequência de processamento.", "Motores CDQC indicados na descrição atual do fornecedor."],
+    "especificacoes": [["Comandos disponíveis", "Display digital ou PLC Siemens"]],
+    "dimensionamento": "Informe a espessura da peça e a largura e o ângulo do bisotê. Confirme os limites de bisel, a tensão, a configuração de rebolos e o comando incluído na proposta."
+  },
+  "55679219": {
+    "resumo": "Furadeira semiautomática de três posições com duplo cabeçote, para preparar furos em peças de vidro destinadas ao beneficiamento.",
+    "aplicacoes": ["Furos para ferragens", "Preparação de peças para têmpera"],
+    "funcionamento": "O vidro é posicionado na mesa e o conjunto de cabeçotes realiza a furação. A configuração com três pares de brocas permite preparar diferentes operações.",
+    "recursos": ["Três pares de brocas descritos para a versão de três posições.", "Peso publicado com mesa de trabalho flutuante."],
+    "especificacoes": [["Diâmetro de furação", "Ø 5 – 110 mm"], ["Altura da mesa", "1000 mm"]],
+    "opcionais": ["Versão 100% automática anunciada como opcional; confirmar o escopo do fornecimento."],
+    "dimensionamento": "Envie os diâmetros, as distâncias às bordas e o desenho dos furos. Confirme ferramentas, rotação, refrigeração e requisitos pneumáticos da configuração escolhida."
+  },
+  "402869343": {
+    "resumo": "Furadeira de quatro posições com duplo cabeçote e mesa inox, anunciada na versão semiautomática com opção de automação integral.",
+    "aplicacoes": ["Furos para ferragens", "Peças de vidro sob desenho"],
+    "funcionamento": "O conjunto executa a furação após o posicionamento do vidro na mesa. A distribuição dos cabeçotes e das posições deve ser definida para os furos previstos na peça.",
+    "recursos": ["Mesa em inox descrita na página.", "Envelope publicado de 2200 × 3000 mm para o vidro."],
+    "especificacoes": [["Diâmetro de furação", "Ø 5 – 110 mm"], ["Altura da mesa", "1000 mm"]],
+    "opcionais": ["Automação integral disponível conforme proposta."],
+    "observacoes": ["O título anuncia quatro posições, mas um item da descrição menciona três pares de brocas. Confirmar a quantidade de pares e sua disposição."],
+    "dimensionamento": "Envie o desenho e os diâmetros dos furos, as espessuras e o volume de produção. Confirme ferramentas, sistema de refrigeração e requisitos de ar comprimido."
+  },
+  "23525454": {
+    "resumo": "Furadeira automática de duplo cabeçote com fixação pneumática do vidro e mesa de suporte com indicação por display.",
+    "aplicacoes": ["Furação de vidro plano", "Preparação de encaixes e ferragens"],
+    "funcionamento": "O sistema pneumático fixa a peça para o trabalho dos cabeçotes. A mesa apoia o vidro e o display auxilia os ajustes de operação.",
+    "recursos": ["Duplo cabeçote de perfuração.", "Fixação pneumática e suporte de mesa para diferentes tamanhos.", "Componentes Schneider identificados na imagem da página."],
+    "especificacoes": [["Cabeçotes", "Duplo cabeçote"], ["Fixação", "Pneumática"], ["Interface", "Display de operação"]],
+    "observacoes": ["Diâmetros, espessuras, potência e envelope de trabalho não são informados no texto publicado. Os limites das furadeiras de três e quatro posições não foram transferidos para este modelo."],
+    "dimensionamento": "Informe diâmetro dos furos, espessura, tamanho da peça e distâncias às bordas. Solicite a ficha dimensional e os requisitos de refrigeração e ar comprimido."
+  },
+  "59082959": {
+    "resumo": "Lavadora horizontal para limpeza e secagem de vidro plano, com escovas, rolos de esponja e opção de ativar a secagem por ar quente.",
+    "aplicacoes": ["Limpeza de chapas de vidro", "Lavagem após beneficiamento"],
+    "funcionamento": "A transmissão horizontal conduz a chapa pelos conjuntos de escovas e rolos de esponja. A velocidade de transporte e a temperatura de secagem podem ser ajustadas.",
+    "recursos": ["Quatro pares de escovas para lavagem.", "Três pares de rolos de esponja para remoção de água.", "Partes em contato com água fabricadas em inox."],
+    "especificacoes": [["Escovas", "4 pares"], ["Rolos de esponja", "3 pares"], ["Secagem", "Ar quente com temperatura ajustável"], ["Transporte", "Horizontal, com velocidade ajustável"]],
+    "dimensionamento": "Escolha a largura de 1200, 1600 ou 2000 mm. Confirme espessuras, peças mínimas, qualidade da água, consumo e alimentação elétrica; não adotar os dados da lavadora turbo como equivalentes."
+  },
+  "34607218": {
+    "resumo": "Lavadora horizontal com pré-lavagem, lavagem principal e secagem por turbo ventilador. Disponível em três larguras, com parâmetros próprios para cada versão.",
+    "aplicacoes": ["Preparação para têmpera e laminação", "Vidros arquitetônicos e moveleiros"],
+    "funcionamento": "O vidro passa pelas etapas de limpeza e pelas facas de ar. O inversor regula o transporte, enquanto as escovas superiores e inferiores têm transmissão separada.",
+    "recursos": ["Três escovas superiores e três inferiores.", "Dois pares de facas de ar e ventilador com filtro.", "Tanques e partes em contato com água em inox."],
+    "especificacoes": [["Escovas", "3 superiores + 3 inferiores"], ["Secagem", "2 pares de facas de ar"]],
+    "removerEspecificacoes": ["Vidro mínimo", "Velocidade", "Potência", "Peso"],
+    "opcionais": ["Configuração Low-E com escovas adequadas.", "Tanque de água quente e elevação superior para manutenção: confirmar inclusão."],
+    "tabela": {"colunas": ["Versão", "Peça mínima", "Avanço", "Potência", "Peso"], "linhas": [["1600 mm", "350 × 350 mm", "0 – 10 m/min", "17 kW", "1800 kg"], ["2000 mm", "350 × 350 mm", "0 – 10 m/min", "25 kW", "2800 kg"], ["2500 mm", "400 × 400 mm", "0,5 – 12 m/min", "28 kW", "3500 kg"]]},
+    "dimensionamento": "Escolha a largura e informe o tipo de vidro e revestimento. A compatibilidade Low-E depende do opcional; potência e velocidade devem ser lidas na linha da versão selecionada."
+  },
+  "25035495": {
+    "resumo": "Lavadora vertical Open Top com seções de lavagem e secagem em inox, destinada ao processamento automático de chapas apoiadas na vertical.",
+    "aplicacoes": ["Lavagem de vidro plano na vertical", "Integração a linhas verticais"],
+    "funcionamento": "O vidro passa pelos três pares de escovas e quatro jatos de água, seguindo para a secagem com quatro facas de ar. O aquecimento do ar pode ser desligado conforme a condição de operação.",
+    "recursos": ["Detector Omron para identificação de vidro revestido.", "Seções em inox e aquecimento progressivo do ar até 40 °C."],
+    "especificacoes": [["Espessura", "3 – 19 mm (tabela ilustrada)"], ["Velocidade", "2 – 10 m/min"], ["Escovas", "3 pares"], ["Facas de ar", "4"], ["Aquecimento do ar", "Até 40 °C"]],
+    "tabelaFonte": "https://cdn.awsli.com.br/564/564711/arquivos/especifica-es-t-cnicas-lavadora-de-vidro-vertical-1600---2000---2500-mm.jpg",
+    "tabela": {"colunas": ["Versão", "Potência", "Peso"], "linhas": [["1600 mm", "9,5 kW", "1800 kg"], ["2000 mm", "17 kW", "2500 kg"], ["2500 mm", "18 kW", "2800 kg"]]},
+    "observacoes": ["Na tabela ilustrada, a versão 2500 mm aparece com máximo de 3000 mm. Confirmar a altura efetivamente lavada e a passagem permitida pelo Open Top."],
+    "dimensionamento": "Informe altura, comprimento, espessura e tipo de revestimento. Confirme o limite completo de peça mínima, alimentação elétrica e preparação da água."
+  },
+  "35239646": {
+    "resumo": "Jateadora série M3 para acabamento de superfícies de vidro, com modos automático e manual e produtividade anunciada de até 30 m²/h.",
+    "aplicacoes": ["Acabamento fosco", "Jateamento decorativo"],
+    "funcionamento": "O transporte conduz o vidro à cabine, onde as pistolas aplicam o abrasivo. O sistema recolhe o material e entrega a chapa pela saída da máquina.",
+    "recursos": ["Três pistolas automáticas e uma manual.", "PLC Mitsubishi com interface touchscreen na descrição publicada.", "Componentes elétricos Siemens e coleta de abrasivo."],
+    "especificacoes": [["Pistolas", "3 automáticas + 1 manual"], ["Produtividade anunciada", "Até 30 m²/h"]],
+    "removerEspecificacoes": ["Velocidade"],
+    "opcionais": ["Compressor não acompanha a máquina; dimensionar e cotar separadamente."],
+    "dimensionamento": "Escolha o tamanho de 1600, 2000 ou 2500 mm e o acabamento pretendido. Solicite pressão e vazão de ar, tipo de abrasivo, potência e condições em que se obtém a produtividade anunciada."
+  },
+  "278452532": {
+    "resumo": "Máquina de marcação a laser de 140 W para vidro e espelho, com movimentação em cinco eixos e área publicada de até 1300 × 2500 mm.",
+    "aplicacoes": ["Gravação em vidro e espelho", "Personalização de superfícies"],
+    "funcionamento": "O conjunto de movimentação posiciona o laser e a lente 3D concentra o feixe na região de processamento. Um refrigerador de água estabiliza a temperatura do sistema.",
+    "recursos": ["Movimentação coordenada em cinco eixos.", "Lente laser 3D e viga transversal em alumínio extrudado.", "Mesa em PVC de alta densidade com 25 mm de espessura."],
+    "especificacoes": [["Eixos", "5"], ["Refrigeração", "Água com controle de temperatura de 26 – 28 °C"], ["Mesa de apoio", "PVC de alta densidade, 25 mm"]],
+    "observacoes": ["Os 140 W se referem ao laser. A espessura de processamento publicada de até 70 mm não define, por si só, a capacidade de perfuração."],
+    "dimensionamento": "Envie uma amostra e o desenho da gravação. Para furação, confirme material, diâmetro e profundidade aplicáveis; solicite também potência total, requisitos do chiller e condições de extração."
+  },
+  "398723570": {
+    "resumo": "Centro CNC de três eixos para lapidação, furação, fresagem e polimento de vidro plano, com troca automática de ferramentas e processamento em dupla estação.",
+    "aplicacoes": ["Recortes para ferragens", "Contornos retos e especiais"],
+    "funcionamento": "A peça é fixada por ventosas. Os eixos interpolados conduzem as operações e o trocador seleciona as ferramentas; a dupla estação permite processar as peças em sequência.",
+    "recursos": ["Spindle refrigerado a água de até 15.000 rpm.", "Calibração de ferramentas e lubrificação automáticas."],
+    "especificacoes": [["Eixos", "3 interpolados"], ["Rotação do spindle", "Até 15.000 rpm"], ["Potência do spindle", "15 kW"], ["Potência", "24 kW (alimentação indicada na tabela)"], ["Alimentação", "380 V / 60 Hz, trifásico"], ["Curso Z", "380 mm; não equivale à espessura do vidro"], ["Fresagem máxima", "300 mm/min"], ["Velocidade de trabalho", "Lapidação < 15 m/min; polimento < 6 m/min"], ["Vidro mínimo", "100 × 100 mm, com ventosa especial"]],
+    "tabelaFonte": "https://cdn.awsli.com.br/564/564711/arquivos/foto-parametro-tecnico.jpg",
+    "tabela": {"colunas": ["Versão / curso XY", "Lapidação máxima", "Peso"], "linhas": [["2000 × 1000 mm", "1900 × 900 mm", "2500 kg"], ["2500 × 1500 mm", "2400 × 1400 mm", "2750 kg"], ["3000 × 1500 mm", "2900 × 1400 mm", "3450 kg"], ["3000 × 2000 mm", "2900 × 1900 mm", "3800 kg"]]},
+    "dimensionamento": "Defina a operação e a versão: curso XY e limite de lapidação são diferentes. Confirme espessuras, ferramentas e fixação para o desenho da peça."
+  },
+  "398873522": {
+    "resumo": "Forno EVA com três bandejas para laminação sob aquecimento e vácuo, com monitoramento por camada e controle de processo Siemens Smart.",
+    "aplicacoes": ["Laminação com filme EVA", "Peças de médio e grande formato"],
+    "funcionamento": "O conjunto vidro e filme é acondicionado no saco de vácuo. O ciclo controla aquecimento e remoção de ar, seguido de abertura programada da porta para iniciar o resfriamento.",
+    "recursos": ["Vacuômetro independente por saco e compensação térmica frontal e traseira.", "Plataforma hidráulica e isolamento térmico de 50 mm."],
+    "especificacoes": [["Temperatura de trabalho", "60 – 150 °C"], ["Tempo de ciclo", "90 – 140 min"], ["Alimentação", "Definida conforme padrão da instalação"], ["Área de instalação", "3720 × 9000 mm"]],
+    "removerEspecificacoes": ["Velocidade"],
+    "observacoes": ["A capacidade de até 54 m²/ciclo depende da configuração de carga. A página não detalha a composição das camadas; confirmar a disposição que permite essa capacidade."],
+    "dimensionamento": "Informe composição e volume de laminados. A receita depende do filme e da montagem; o cabo citado pelo fornecedor não substitui o dimensionamento elétrico da instalação."
+  },
+  "364216038": {
+    "resumo": "Carregadora móvel para alimentação de mesas de corte, com comando remoto para deslocamento à frente, atrás e para os lados.",
+    "aplicacoes": ["Alimentação de mesas CNC", "Movimentação em layouts flexíveis"],
+    "funcionamento": "Os braços fixam a chapa por vácuo e conduzem o carregamento. O controle remoto permite reposicionar a carregadora conforme a mesa e o arranjo dos cavaletes.",
+    "recursos": ["Três braços e 12 ventosas.", "Manômetro de pressão negativa, proteção de fase e parada de emergência."],
+    "especificacoes": [["Sistema de vácuo", "3 braços e 12 ventosas"], ["Movimentação", "Frente, trás, direita e esquerda por controle remoto"], ["Potência", "7 kW (valor total publicado)"]],
+    "observacoes": ["A página também traz a indicação de 3 kW entre parênteses, sem explicar sua condição de medição. Confirmar a demanda elétrica; a alimentação anunciada é 380 V / 50 Hz trifásica."],
+    "dimensionamento": "Informe peso, formato das chapas e trajeto. Confirme a capacidade de 1,5 t para a posição de trabalho, o espaço de manobra e a configuração elétrica para 60 Hz."
+  },
+  "237682619": {
+    "resumo": "Carregadora automática que retira o vidro do cavalete e alimenta a lapidadora bilateral por uma mesa de alinhamento.",
+    "aplicacoes": ["Alimentação de bilaterais", "Automação da entrada de chapas"],
+    "funcionamento": "As ventosas retiram a chapa do cavalete. O vidro segue para a mesa de alinhamento e é posicionado para entrar na bilateral, com transporte regulado por inversor de frequência.",
+    "recursos": ["Carregamento automático com ventosas.", "Velocidade regulável e configuração adaptável às dimensões do cliente."],
+    "especificacoes": [["Sistema de carga", "Ventosas com mesa de alinhamento"], ["Ar comprimido", "0,6 MPa, filtrado e seco"]],
+    "dimensionamento": "Confirme altura e sentido de entrada da bilateral, peso das peças e arranjo dos cavaletes. A faixa de 4 – 6 peças/min depende do tamanho do vidro e da integração à linha."
+  },
+  "380647494": {
+    "resumo": "Carregadora automática para a entrada de lapidadoras verticais, destinada a peças de 400 × 400 a 3600 × 2400 mm na configuração publicada.",
+    "aplicacoes": ["Entrada de lapidadora vertical", "Automação da alimentação"],
+    "funcionamento": "O equipamento automatiza o carregamento de peças na linha vertical. O ciclo e os ajustes são configurados conforme a instalação e a máquina que receberá o vidro.",
+    "recursos": ["Controles e ajustes adaptáveis ao processo.", "Solução configurável conforme as necessidades da linha."],
+    "especificacoes": [["Integração", "Entrada de lapidadora vertical"]],
+    "dimensionamento": "Informe o modelo da lapidadora, o sentido do fluxo e a altura de transporte. Solicite espessura e peso admissíveis, cadência, potência e requisitos de ar da versão ofertada."
+  },
+  "275917064": {
+    "resumo": "Carregadora de chapas para mesas de corte, disponível em configurações para 1, 2, 4 ou 6 cavaletes, com seleção da estação de alimentação.",
+    "aplicacoes": ["Alimentação de mesas de corte", "Seleção entre diferentes cavaletes"],
+    "funcionamento": "O braço inclina, detecta a chapa e aplica vácuo. Após o retorno e o alinhamento, o transporte entrega o vidro à mesa de corte.",
+    "recursos": ["PLC Teco, IHM MCGS e sensores Omron.", "Rodas de PU e ventosas de borracha NBR.", "Modos automático e manual, alarme e botão de emergência."],
+    "especificacoes": [["Estações", "1, 2, 4 ou 6 cavaletes"], ["Bomba de vácuo", "40 m³/h"], ["Profundidade de sucção", "750 mm (informada pelo fornecedor)"]],
+    "removerEspecificacoes": ["Tamanhos"],
+    "dimensionamento": "Defina a quantidade de tipos de vidro, o formato e o peso de cada chapa. Confirme o layout, a altura de transferência e a compatibilidade com o comando da mesa CNC."
+  },
+  "343610648": {
+    "resumo": "Carregadora robótica com ventosas e quatro eixos para transferir peças do cavalete à lapidadora bilateral.",
+    "aplicacoes": ["Alimentação de bilaterais", "Movimentação de peças de 8 – 50 kg"],
+    "funcionamento": "Os eixos X e Y realizam o deslocamento horizontal, Z faz a elevação e A executa a rotação. O PLC com touchscreen coordena o ciclo de transferência.",
+    "recursos": ["Rotação de 180° no eixo A.", "Estrutura em perfis de alumínio e movimentação por servomotores.", "Ventosas configuradas conforme a peça."],
+    "especificacoes": [["Eixos", "X, Y, Z e A"], ["Rotação do eixo A", "180°"]],
+    "observacoes": ["A página usa kgf ao descrever a sucção, sem área de referência. Esse dado não foi tratado como pressão de vácuo."],
+    "dimensionamento": "Informe massa e geometria da peça e a posição dos cavaletes. A cadência de 5 – 7 peças/min e os limites publicados devem ser confirmados para a configuração de ventosas e a linha."
+  },
+  "380651875": {
+    "resumo": "Descarregadora automática para retirar peças da saída de uma lapidadora vertical, com configuração ajustada à linha de produção.",
+    "aplicacoes": ["Saída de lapidadora vertical", "Automação da retirada de peças"],
+    "funcionamento": "O sistema recebe o vidro após a etapa de lapidação e automatiza a retirada. A sequência de movimentos é definida conforme a saída da máquina e o arranjo de recebimento.",
+    "recursos": ["Faixa de peça publicada de 400 × 400 a 3600 × 2400 mm.", "Controles e ajustes personalizáveis para a instalação."],
+    "especificacoes": [["Integração", "Saída de lapidadora vertical"]],
+    "dimensionamento": "Confirme espessura, massa, cadência, altura de saída e posição dos cavaletes. Solicite potência e utilidades da descarregadora; os dados da carregadora de entrada não definem esta versão."
+  },
+  "400260991": {
+    "resumo": "Elevador a vácuo com braço hidráulico articulado e alimentação por bateria para movimentar e posicionar chapas de vidro.",
+    "aplicacoes": ["Movimentação de chapas", "Posicionamento para instalação"],
+    "funcionamento": "As quatro ventosas fixam a chapa e o braço articulado realiza a elevação e o posicionamento. O painel e o comando remoto auxiliam o controle da operação.",
+    "recursos": ["Monitoramento de vácuo, alarme e parada de emergência.", "Operação por bateria e braço de acionamento hidráulico.", "Manual técnico e documentação das baterias anunciados pelo fornecedor."],
+    "especificacoes": [["Elevação", "Até 3,5 m"], ["Ventosas", "4"], ["Acionamento do braço", "Hidráulico"]],
+    "dimensionamento": "Confirme a carga admissível para o alcance, a altura e a inclinação necessários. Solicite diagrama de carga, autonomia e condições de apoio da chapa para a aplicação."
+  },
+  "401747760": {
+    "resumo": "Conjunto de ventosas com bomba de vácuo elétrica a bateria para içamento, movimentação, giro e basculamento de chapas.",
+    "aplicacoes": ["Transporte interno de chapas", "Posicionamento de vidro"],
+    "funcionamento": "A bateria de 12 V alimenta a geração de vácuo e o conjunto mantém a fixação da chapa. O giro e o basculamento auxiliam a mudança de orientação.",
+    "recursos": ["Quatro ventosas e sistema de manutenção de pressão.", "Operação sem alimentação elétrica contínua durante o uso."],
+    "especificacoes": [["Bateria", "12 V"], ["Ventosas", "4"], ["Giro", "360°"], ["Basculamento", "Até 90°"]],
+    "dimensionamento": "Informe dimensões, massa e orientação da chapa. Confirme autonomia, carregador, condições de aplicação dos 400 kg e o equipamento de içamento compatível e incluído no fornecimento."
+  },
+  "401747573": {
+    "resumo": "Conjunto pneumático de quatro ventosas para içamento e posicionamento de chapas de vidro, com carga anunciada de até 350 kg.",
+    "aplicacoes": ["Movimentação em fábrica", "Posicionamento de chapas"],
+    "funcionamento": "O sistema pneumático aciona o conjunto de fixação para movimentar o vidro. A rotação auxilia o posicionamento e a inclinação depende da configuração escolhida.",
+    "recursos": ["Quatro ventosas para distribuição do apoio.", "Alcance vertical aproximado de 1,2 m informado na descrição."],
+    "especificacoes": [["Ventosas", "4"], ["Rotação", "0 – 90°"], ["Alcance vertical", "Aproximadamente 1,2 m"]],
+    "opcionais": ["Inclinação de 0 – 90° disponível conforme configuração."],
+    "dimensionamento": "Confirme pressão e vazão de ar, sistema de içamento compatível, orientação da carga e alcance necessário. A capacidade deve ser validada para o tipo de chapa e a configuração de trabalho."
+  }
+}
