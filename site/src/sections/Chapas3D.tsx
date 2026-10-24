@@ -93,6 +93,8 @@ export function Chapas3D() {
         <Suspense fallback={null}>
           <JornadaCorte />
         </Suspense>
+        {/* vinheta de cinema: escurece as bordas e puxa o olho para a máquina */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_70%_at_60%_50%,transparent_55%,rgba(2,5,12,0.75))]" />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent md:bg-gradient-to-r md:from-ink/90 md:via-ink/20 md:to-transparent md:to-55%" />
 
         <div className="pointer-events-none relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-end px-5 pb-10 md:justify-center md:px-8 md:pb-0">
