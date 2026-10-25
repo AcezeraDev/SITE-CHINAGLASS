@@ -3,11 +3,12 @@ import { ArrowRight, ArrowUpRight, Camera, FileImage, Maximize2, Play, Rotate3d,
 import { Ampliar } from "@/components/Ampliar"
 import { VerNaFabrica } from "@/components/VerNaFabrica"
 import { Cursor } from "@/components/Cursor"
+import { MagicCard } from "@/components/ui/magic-card"
 import { CAPAS_MAQUINAS } from "@/capasMaquinas"
 import { fotosDaMaquina, imagemDeEstudio } from "@/lib/galeriaMaquinas"
 import { Filtros } from "@/components/Filtros"
-import { PageHero } from "@/components/PageHero"
 import { VideoModal } from "@/components/VideoModal"
+import { HeroMaquinas } from "@/components/HeroMaquinas"
 import { t } from "@/i18n"
 import { gsap, scrollToId } from "@/lib/motion"
 import { usePage } from "@/lib/page"
@@ -32,37 +33,62 @@ const linhaDaUrl = () => {
 }
 
 function Card({ m, onView, onQuote }: { m: MaquinaCatalogo; onView: () => void; onQuote: () => void }) {
+  const fotos = fotosDaMaquina(m).length
   return (
-    <article className="maq-card group flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-ink-2 transition-colors duration-300 hover:border-ice/30">
-      <button onClick={onView} className="relative block cursor-pointer overflow-hidden bg-white text-left" aria-label={t("Ver ficha: {nome}", { nome: t(m.nome) })}>
+    <MagicCard
+      className="maq-card group h-full rounded-3xl [&>div:last-child]:flex [&>div:last-child]:h-full [&>div:last-child]:flex-col"
+      gradientColor="#0e2347"
+      gradientFrom="#8fe9ff"
+      gradientTo="#2f7bff"
+      gradientSize={280}
+    >
+      {/* foto num estojo claro, com a linha e o que a ficha tem (fotos, vídeo) por cima */}
+      <button
+        onClick={onView}
+        className="relative m-2 block cursor-pointer overflow-hidden rounded-[1.1rem] bg-[radial-gradient(ellipse_at_50%_38%,#ffffff_30%,#e6ecf4)] text-left"
+        aria-label={t("Ver ficha: {nome}", { nome: t(m.nome) })}
+      >
         <img
           src={CAPAS_MAQUINAS[m.id] ?? m.imgs[0]}
           alt={t(m.nome)}
           loading="lazy"
-          className="aspect-[4/3] w-full object-contain p-4 transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-105"
+          className="aspect-[4/3] w-full object-contain px-5 pb-4 pt-9 mix-blend-multiply transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-[1.06]"
         />
-        {m.videos.length > 0 && (
-          <span className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-ink/80 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-white backdrop-blur-md">
-            <Play className="h-3 w-3 fill-current" /> {t("Vídeo")}
-          </span>
-        )}
+        <span className="absolute left-3 top-3 max-w-[62%] truncate rounded-full bg-ink/85 px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.14em] text-ice backdrop-blur-md">
+          {nomeCat(m.categorias[0])}
+        </span>
+        <span className="absolute right-3 top-3 flex gap-1">
+          {fotos > 1 && (
+            <span className="flex items-center gap-1 rounded-full bg-ink/85 px-2 py-1 font-mono text-[10px] text-white/85 backdrop-blur-md" title={t("Fotos")}>
+              <Camera className="h-3 w-3" /> {fotos}
+            </span>
+          )}
+          {m.videos.length > 0 && (
+            <span className="flex items-center rounded-full bg-ink/85 px-2 py-1 text-white/85 backdrop-blur-md" title={t("Vídeo")}>
+              <Play className="h-3 w-3 fill-current" />
+            </span>
+          )}
+        </span>
+        <span className="absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-ink text-white opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <ArrowUpRight className="h-4 w-4" />
+        </span>
       </button>
-      <div className="flex flex-1 flex-col p-5">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ice">{nomeCat(m.categorias[0])}</p>
-        <h3 className="mt-2 font-medium leading-snug text-white">{t(m.nome)}</h3>
-        <dl className="mt-4 grid gap-1 font-mono text-[11px]">
-          {m.specs.slice(0, 3).map(([k, v]) => (
-            <div key={k} className="flex items-baseline gap-2">
-              <dt className="shrink-0 uppercase tracking-[0.1em] text-white/40">{t(k)}</dt>
-              <span className="mb-[3px] min-w-3 flex-1 border-b border-dotted border-white/15" aria-hidden="true" />
-              <dd className="truncate text-right text-white/85" title={t(v)}>{t(v)}</dd>
+
+      <div className="flex flex-1 flex-col px-5 pb-5 pt-3">
+        <h3 className="line-clamp-2 min-h-[2.6em] text-[15px] font-medium leading-[1.3] text-white">{t(m.nome)}</h3>
+        {/* especificações em ladrilhos: rótulo em cima, valor embaixo, quebrando linha em vez de cortar */}
+        <dl className="mt-4 grid grid-cols-2 gap-1.5">
+          {m.specs.slice(0, 4).map(([k, v]) => (
+            <div key={k} className="min-w-0 rounded-xl border border-white/[0.07] bg-white/[0.03] px-3 py-2.5 [&:last-child:nth-child(odd)]:col-span-2">
+              <dt className="break-words font-mono text-[9.5px] uppercase leading-tight tracking-[0.08em] text-white/40">{t(k)}</dt>
+              <dd className="mt-1 line-clamp-2 break-words text-[13px] leading-snug text-white/90" title={t(v)}>{t(v)}</dd>
             </div>
           ))}
         </dl>
         <div className="mt-auto grid grid-cols-2 gap-2 pt-5">
           <button
             onClick={onView}
-            className="h-11 cursor-pointer rounded-xl border border-white/15 text-sm text-white transition-colors duration-200 hover:border-white/40 hover:bg-white/5"
+            className="h-11 cursor-pointer rounded-xl border border-white/15 text-sm text-white transition-colors duration-200 hover:border-ice/50 hover:bg-white/5"
           >
             {t("Ver ficha")}
           </button>
@@ -74,7 +100,7 @@ function Card({ m, onView, onQuote }: { m: MaquinaCatalogo; onView: () => void; 
           </button>
         </div>
       </div>
-    </article>
+    </MagicCard>
   )
 }
 
@@ -385,9 +411,8 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
   )
 }
 
-function Catalogo({ onQuote }: { onQuote: (m: MaquinaCatalogo) => void }) {
+function Catalogo({ linha, setLinha, onQuote }: { linha: string; setLinha: (slug: string) => void; onQuote: (m: MaquinaCatalogo) => void }) {
   const root = useRef<HTMLElement>(null)
-  const [linha, setLinha] = useState(linhaDaUrl)
   const [busca, setBusca] = useState("")
   const [aberta, setAberta] = useState<MaquinaCatalogo | null>(maquinaDaUrl)
   const [video, setVideo] = useState<string | null>(null)
@@ -471,6 +496,8 @@ export default function MaquinasPage() {
     "Catálogo completo de máquinas China Glass: mesas de corte CNC, lapidadoras, bilaterais, biseladoras, furadeiras, lavadoras, jateadoras, laser, centro de usinagem, forno EVA e carregadoras. Ficha técnica e orçamento."
   )
   const [escolhida, setEscolhida] = useState<string>()
+  // linha do catálogo fica aqui para a vitrine da abertura também poder filtrar
+  const [linha, setLinha] = useState(linhaDaUrl)
 
   const pedir = (m: MaquinaCatalogo) => {
     setEscolhida(m.nome)
@@ -483,22 +510,14 @@ export default function MaquinasPage() {
       <div className="grain" aria-hidden="true" />
       <Navbar />
       <main>
-        <PageHero
-          crumb={t("Máquinas")}
-          title={t("Todas as")}
-          accent={t("máquinas.")}
-          sub={t(
-            "O catálogo completo da China Glass, separado pelas mesmas linhas do site atual. Abra a ficha técnica de cada máquina e peça o orçamento direto dela."
-          )}
-          chips={[
-            t("{n} máquinas", { n: MAQUINAS.length }),
-            t("{n} linhas", { n: CATEGORIAS_MAQUINAS.length }),
-            t("Garantia de 1 ano"),
-            t("Preço sob consulta"),
-          ]}
-          cta={{ label: t("Ver catálogo"), target: "catalogo" }}
+        <HeroMaquinas
+          onLinha={(slug) => {
+            setLinha(slug)
+            window.history.replaceState(null, "", `/maquinas?linha=${slug}`)
+            scrollToId("catalogo")
+          }}
         />
-        <Catalogo onQuote={pedir} />
+        <Catalogo linha={linha} setLinha={setLinha} onQuote={pedir} />
         <Orcamento opcoes={OPCOES_FORM} selecionada={escolhida} />
       </main>
       <Footer />

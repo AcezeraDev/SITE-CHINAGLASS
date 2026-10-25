@@ -162,3 +162,36 @@ body {
   }
   .grain { display: none; }
 }
+/* Chapa de vidro da abertura do catálogo de máquinas */
+.vitrine-chapa {
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(143, 233, 255, 0.03) 40%, rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 1px 0 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 0 1px rgba(143, 233, 255, 0.1),
+    0 40px 80px -30px rgba(0, 0, 0, 0.7);
+}
+/* reflexo que passa pelo vidro de tempos em tempos */
+.vitrine-chapa::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.09) 48%, rgba(255, 255, 255, 0.02) 52%, transparent 58%);
+  transform: translateX(-60%);
+  animation: vitrine-reflexo 7s ease-in-out infinite;
+}
+@keyframes vitrine-reflexo {
+  0%, 55% { transform: translateX(-60%); }
+  85%, 100% { transform: translateX(60%); }
+}
+.vit-peca { animation: vit-peca 4.2s ease-in-out infinite; }
+@keyframes vit-peca {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-7px) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vitrine-chapa::after, .vit-peca { animation: none; }
+}
