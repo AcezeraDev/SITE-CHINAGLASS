@@ -81,6 +81,8 @@ export function setLang(l: Lang) {
   if (l === atual) return
   salvar(l)
   const url = new URL(window.location.href)
+  // com #seção na URL, replace para o mesmo endereço só pula para a âncora e não recarrega
+  if (!url.searchParams.has("lang")) return window.location.reload()
   url.searchParams.delete("lang")
   window.location.replace(url.toString())
 }
