@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { ArrowUpRight, Check, Eye, Plus, Search, X } from "lucide-react"
+import { ArrowUpRight, Check, Eye, Plus, X } from "lucide-react"
 import { CropMarks, MachineStage } from "@/components/MachineStage"
+import { Filtros } from "@/components/Filtros"
 import { t } from "@/i18n"
 import { gsap } from "@/lib/motion"
 import { cn } from "@/lib/utils"
@@ -159,38 +160,13 @@ export function Catalogo() {
   return (
     <section id="catalogo" ref={root} className="relative bg-ink px-5 pb-28 pt-10 md:px-8 md:pb-36">
       <div className="mx-auto max-w-7xl">
-        {/* barra de filtros fixa no topo enquanto rola */}
-        <div className="sticky top-3 z-30 mb-10 md:top-24">
-          <div className="glass flex flex-col gap-3 rounded-2xl p-3 md:flex-row md:items-center md:justify-between">
-            <div className="flex gap-1 overflow-x-auto" role="group" aria-label={t("Filtrar por máquina")}>
-              {FILTROS.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setFiltro(f)}
-                  aria-pressed={filtro === f}
-                  className={cn(
-                    "flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 text-sm transition-colors duration-200",
-                    filtro === f ? "bg-white text-ink" : "text-white/70 hover:bg-white/5 hover:text-white"
-                  )}
-                >
-                  {t(f)}
-                  <span className={cn("font-mono text-[10px]", filtro === f ? "text-ink/50" : "text-white/35")}>{contagem(f)}</span>
-                </button>
-              ))}
-            </div>
-            <label className="relative flex items-center md:w-80">
-              <span className="sr-only">{t("Buscar peça")}</span>
-              <Search className="pointer-events-none absolute left-3.5 h-4 w-4 text-white/40" />
-              <input
-                type="search"
-                value={busca}
-                onChange={(e) => setBusca(e.target.value)}
-                placeholder={t("Buscar por nome ou código")}
-                className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pl-10 pr-3 text-base text-white placeholder:text-white/35 focus:border-ice/60 focus:outline-none md:text-sm"
-              />
-            </label>
-          </div>
-        </div>
+        <Filtros
+          rotulo={t("Filtrar por máquina")}
+          opcoes={FILTROS.map((f) => ({ valor: f, rotulo: t(f), total: contagem(f) }))}
+          valor={filtro}
+          onChange={(v) => setFiltro(v as (typeof FILTROS)[number])}
+          busca={{ valor: busca, onChange: setBusca, placeholder: t("Buscar por nome ou código"), rotulo: t("Buscar peça") }}
+        />
 
         <p className="mb-6 font-mono text-xs text-white/40" aria-live="polite">
           {t(lista.length === 1 ? "{n} peça" : "{n} peças", { n: lista.length })}

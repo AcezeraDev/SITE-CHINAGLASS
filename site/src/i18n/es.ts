@@ -112,6 +112,7 @@ const es: Record<string, string> = {
   "QR Code para abrir no celular": "Código QR para abrir en el celular",
   "Aponte a câmera do celular para o QR Code, toque em “Ver na minha fábrica” e depois aponte para o chão.": "Apunta la cámara del celular al código QR, toca “Ver en mi fábrica” y luego apunta al suelo.",
   "Anterior": "Anterior",
+  "Limpar busca": "Borrar búsqueda",
   "Próxima": "Siguiente",
   "Arraste para girar · role ou pince para zoom": "Arrastra para girar · desplaza o pellizca para hacer zoom",
   "Foto real": "Foto real",

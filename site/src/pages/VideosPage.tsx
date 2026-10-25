@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Play } from "lucide-react"
 import { Cursor } from "@/components/Cursor"
+import { Filtros } from "@/components/Filtros"
 import { PageHero } from "@/components/PageHero"
 import { VideoModal } from "@/components/VideoModal"
 import { EMPRESA } from "@/data"
@@ -106,23 +107,12 @@ export default function VideosPage() {
         />
         <section id="videos" ref={root} className="relative bg-ink px-5 pb-28 md:px-8 md:pb-36">
           <div className="mx-auto max-w-7xl">
-            <div className="sticky top-3 z-30 mb-10 md:top-24">
-              <div className="glass flex gap-1 overflow-x-auto rounded-2xl p-3 [scrollbar-width:none]" role="group" aria-label={t("Filtrar vídeos por linha")}>
-                {FILTROS.map((f) => (
-                  <button
-                    key={f.slug}
-                    onClick={() => setFiltro(f.slug)}
-                    aria-pressed={filtro === f.slug}
-                    className={cn(
-                      "h-10 shrink-0 cursor-pointer rounded-xl px-4 text-sm transition-colors duration-200",
-                      filtro === f.slug ? "bg-white text-ink" : "text-white/70 hover:bg-white/5 hover:text-white"
-                    )}
-                  >
-                    {t(f.nome)}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <Filtros
+              rotulo={t("Filtrar vídeos por linha")}
+              opcoes={FILTROS.map((f) => ({ valor: f.slug, rotulo: t(f.nome) }))}
+              valor={filtro}
+              onChange={setFiltro}
+            />
             <p className="mb-6 font-mono text-xs text-white/40" aria-live="polite">
               {t(lista.length === 1 ? "{n} vídeo" : "{n} vídeos", { n: lista.length })}
             </p>

@@ -1,8 +1,9 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { ArrowRight, ArrowUpRight, Camera, FileImage, Maximize2, Play, Rotate3d, Search, X } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Camera, FileImage, Maximize2, Play, Rotate3d, X } from "lucide-react"
 import { Ampliar } from "@/components/Ampliar"
 import { VerNaFabrica } from "@/components/VerNaFabrica"
 import { Cursor } from "@/components/Cursor"
+import { Filtros } from "@/components/Filtros"
 import { PageHero } from "@/components/PageHero"
 import { VideoModal } from "@/components/VideoModal"
 import { t } from "@/i18n"
@@ -416,37 +417,13 @@ function Catalogo({ onQuote }: { onQuote: (m: MaquinaCatalogo) => void }) {
   return (
     <section id="catalogo" ref={root} className="relative bg-ink px-5 pb-28 md:px-8 md:pb-36">
       <div className="mx-auto max-w-7xl">
-        <div className="sticky top-3 z-30 mb-10 md:top-24">
-          <div className="glass flex flex-col gap-3 rounded-2xl p-3 lg:flex-row lg:items-center">
-            <div className="flex min-w-0 flex-1 gap-1 overflow-x-auto [scrollbar-width:none]" role="group" aria-label={t("Filtrar por linha")}>
-              {filtros.map((f) => (
-                <button
-                  key={f.slug}
-                  onClick={() => escolher(f.slug)}
-                  aria-pressed={linha === f.slug}
-                  className={cn(
-                    "flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 text-sm transition-colors duration-200",
-                    linha === f.slug ? "bg-white text-ink" : "text-white/70 hover:bg-white/5 hover:text-white"
-                  )}
-                >
-                  {t(f.nome)}
-                  <span className={cn("font-mono text-[10px]", linha === f.slug ? "text-ink/50" : "text-white/35")}>{contagem(f.slug)}</span>
-                </button>
-              ))}
-            </div>
-            <label className="relative flex shrink-0 items-center lg:w-72">
-              <span className="sr-only">{t("Buscar máquina")}</span>
-              <Search className="pointer-events-none absolute left-3.5 h-4 w-4 text-white/40" />
-              <input
-                type="search"
-                value={busca}
-                onChange={(e) => setBusca(e.target.value)}
-                placeholder={t("Buscar máquina")}
-                className="h-10 w-full rounded-xl border border-white/10 bg-white/[0.04] pl-10 pr-3 text-base text-white placeholder:text-white/35 focus:border-ice/60 focus:outline-none md:text-sm"
-              />
-            </label>
-          </div>
-        </div>
+        <Filtros
+          rotulo={t("Filtrar por linha")}
+          opcoes={filtros.map((f) => ({ valor: f.slug, rotulo: t(f.nome), total: contagem(f.slug) }))}
+          valor={linha}
+          onChange={escolher}
+          busca={{ valor: busca, onChange: setBusca, placeholder: t("Buscar máquina"), rotulo: t("Buscar máquina") }}
+        />
 
         <p className="mb-6 font-mono text-xs text-white/40" aria-live="polite">
           {t(lista.length === 1 ? "{n} máquina" : "{n} máquinas", { n: lista.length })}
