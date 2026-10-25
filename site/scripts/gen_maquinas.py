@@ -77,6 +77,36 @@ NOMES = {
     "401747573": "Ventosa pneumática 350 kg",
 }
 
+# Fotos a mais na ficha, escolhidas à mão: "g5" = 6ª foto da galeria, "d0" = 1ª imagem da descrição.
+# Só fotos, renders e plantas de layout; logos de fornecedores e tabelas ficam de fora.
+EXTRAS = {
+    "81791287": ["d0"],
+    "237682619": ["d0"],
+    "398723570": ["d0", "d1", "d2"],
+    "398873522": ["d0"],
+    "278452532": ["d0", "d2", "d4", "d6", "d8", "d9"],
+    "91095488": ["d0", "d5"],
+    "26195533": ["d0", "g4", "g5", "g6"],
+    "242693919": ["d0"],
+    "59082959": ["g4", "g5", "g6", "g7", "d0"],
+    "34607218": ["d0", "d1", "d2"],
+    "25035495": ["g4"],
+    "180212740": ["d1"],
+    "81770856": ["d2", "d3"],
+    "277831702": ["d0", "d1", "g4", "g8", "g9", "g10", "g11", "g13", "g16", "g17"],
+    "397708527": ["d0"],
+    "81769971": ["g4", "g5", "g6", "g8", "d2"],
+    "344423780": ["d0", "d1"],
+    "355640119": ["d0", "d1"],
+    "34607018": ["d0", "g4", "g5", "g6"],
+}
+# Das 4 primeiras fotos da galeria, as que são tabela ou logo
+FORA = {
+    "35239646": ["g1", "g2", "g3"],
+    "23525454": ["g3"],
+    "91095488": ["g3"],
+}
+
 SIGLAS = {"cnc", "xyz", "eva", "plc", "abb", "ihm", "inox", "low-e", "ii"}
 
 
@@ -128,10 +158,13 @@ for f in fichas:
     cats = [ORIGINAL[c] for c in p["categorias"] if c in ORIGINAL] or SEM_CATEGORIA.get(f["id"], [])
     cats = list(dict.fromkeys(cats))
     imgs = []
-    for n, rel in enumerate(p["imagens_galeria"][:FOTOS_POR_MAQUINA], 1):
-        nome = f"{f['id']}-{n}.webp"
+    galeria = [f"g{i}" for i in range(min(FOTOS_POR_MAQUINA, len(p["imagens_galeria"])))]
+    for chave in [c for c in galeria if c not in FORA.get(f["id"], [])] + EXTRAS.get(f["id"], []):
+        lista, i = ("imagens_galeria" if chave[0] == "g" else "imagens_descricao"), int(chave[1:])
+        # fotos da galeria mantêm o nome antigo (id-1.webp); as extras levam a chave (id-d0.webp)
+        nome = f"{f['id']}-{i + 1}.webp" if chave in galeria else f"{f['id']}-{chave}.webp"
         if not os.path.exists(os.path.join(OUT_IMG, nome)):
-            foto(rel, nome)
+            foto(p[lista][i], nome)
         imgs.append(f"/img/maquinas/{nome}")
     specs = []
     for k, label in SPECS:

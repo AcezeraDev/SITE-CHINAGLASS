@@ -30,7 +30,9 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "mesa-de-corte"
     ],
     "imgs": [
-      "/img/maquinas/81770856-1.webp"
+      "/img/maquinas/81770856-1.webp",
+      "/img/maquinas/81770856-d2.webp",
+      "/img/maquinas/81770856-d3.webp"
     ],
     "specs": [
       [
@@ -129,7 +131,12 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/81769971-1.webp",
       "/img/maquinas/81769971-2.webp",
       "/img/maquinas/81769971-3.webp",
-      "/img/maquinas/81769971-4.webp"
+      "/img/maquinas/81769971-4.webp",
+      "/img/maquinas/81769971-g4.webp",
+      "/img/maquinas/81769971-g5.webp",
+      "/img/maquinas/81769971-g6.webp",
+      "/img/maquinas/81769971-g8.webp",
+      "/img/maquinas/81769971-d2.webp"
     ],
     "specs": [
       [
@@ -164,7 +171,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "mesa-de-corte"
     ],
     "imgs": [
-      "/img/maquinas/397708527-1.webp"
+      "/img/maquinas/397708527-1.webp",
+      "/img/maquinas/397708527-d0.webp"
     ],
     "specs": [
       [
@@ -200,7 +208,9 @@ export const MAQUINAS: MaquinaCatalogo[] = [
     ],
     "imgs": [
       "/img/maquinas/344423780-1.webp",
-      "/img/maquinas/344423780-2.webp"
+      "/img/maquinas/344423780-2.webp",
+      "/img/maquinas/344423780-d0.webp",
+      "/img/maquinas/344423780-d1.webp"
     ],
     "specs": [
       [
@@ -281,7 +291,9 @@ export const MAQUINAS: MaquinaCatalogo[] = [
     ],
     "imgs": [
       "/img/maquinas/355640119-1.webp",
-      "/img/maquinas/355640119-2.webp"
+      "/img/maquinas/355640119-2.webp",
+      "/img/maquinas/355640119-d0.webp",
+      "/img/maquinas/355640119-d1.webp"
     ],
     "specs": [
       [
@@ -443,7 +455,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "lapidacao"
     ],
     "imgs": [
-      "/img/maquinas/242693919-1.webp"
+      "/img/maquinas/242693919-1.webp",
+      "/img/maquinas/242693919-d0.webp"
     ],
     "specs": [
       [
@@ -477,7 +490,11 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/26195533-1.webp",
       "/img/maquinas/26195533-2.webp",
       "/img/maquinas/26195533-3.webp",
-      "/img/maquinas/26195533-4.webp"
+      "/img/maquinas/26195533-4.webp",
+      "/img/maquinas/26195533-d0.webp",
+      "/img/maquinas/26195533-g4.webp",
+      "/img/maquinas/26195533-g5.webp",
+      "/img/maquinas/26195533-g6.webp"
     ],
     "specs": [
       [
@@ -634,7 +651,17 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/277831702-1.webp",
       "/img/maquinas/277831702-2.webp",
       "/img/maquinas/277831702-3.webp",
-      "/img/maquinas/277831702-4.webp"
+      "/img/maquinas/277831702-4.webp",
+      "/img/maquinas/277831702-d0.webp",
+      "/img/maquinas/277831702-d1.webp",
+      "/img/maquinas/277831702-g4.webp",
+      "/img/maquinas/277831702-g8.webp",
+      "/img/maquinas/277831702-g9.webp",
+      "/img/maquinas/277831702-g10.webp",
+      "/img/maquinas/277831702-g11.webp",
+      "/img/maquinas/277831702-g13.webp",
+      "/img/maquinas/277831702-g16.webp",
+      "/img/maquinas/277831702-g17.webp"
     ],
     "specs": [
       [
@@ -672,7 +699,11 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/34607018-1.webp",
       "/img/maquinas/34607018-2.webp",
       "/img/maquinas/34607018-3.webp",
-      "/img/maquinas/34607018-4.webp"
+      "/img/maquinas/34607018-4.webp",
+      "/img/maquinas/34607018-d0.webp",
+      "/img/maquinas/34607018-g4.webp",
+      "/img/maquinas/34607018-g5.webp",
+      "/img/maquinas/34607018-g6.webp"
     ],
     "specs": [
       [
@@ -742,7 +773,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/180212740-1.webp",
       "/img/maquinas/180212740-2.webp",
       "/img/maquinas/180212740-3.webp",
-      "/img/maquinas/180212740-4.webp"
+      "/img/maquinas/180212740-4.webp",
+      "/img/maquinas/180212740-d1.webp"
     ],
     "specs": [
       [
@@ -774,7 +806,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/91095488-1.webp",
       "/img/maquinas/91095488-2.webp",
       "/img/maquinas/91095488-3.webp",
-      "/img/maquinas/91095488-4.webp"
+      "/img/maquinas/91095488-d0.webp",
+      "/img/maquinas/91095488-d5.webp"
     ],
     "specs": [
       [
@@ -836,7 +869,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/81791287-1.webp",
       "/img/maquinas/81791287-2.webp",
       "/img/maquinas/81791287-3.webp",
-      "/img/maquinas/81791287-4.webp"
+      "/img/maquinas/81791287-4.webp",
+      "/img/maquinas/81791287-d0.webp"
     ],
     "specs": [
       [
@@ -1017,7 +1051,12 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/59082959-1.webp",
       "/img/maquinas/59082959-2.webp",
       "/img/maquinas/59082959-3.webp",
-      "/img/maquinas/59082959-4.webp"
+      "/img/maquinas/59082959-4.webp",
+      "/img/maquinas/59082959-g4.webp",
+      "/img/maquinas/59082959-g5.webp",
+      "/img/maquinas/59082959-g6.webp",
+      "/img/maquinas/59082959-g7.webp",
+      "/img/maquinas/59082959-d0.webp"
     ],
     "specs": [
       [
@@ -1048,7 +1087,10 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "lavadora"
     ],
     "imgs": [
-      "/img/maquinas/34607218-1.webp"
+      "/img/maquinas/34607218-1.webp",
+      "/img/maquinas/34607218-d0.webp",
+      "/img/maquinas/34607218-d1.webp",
+      "/img/maquinas/34607218-d2.webp"
     ],
     "specs": [
       [
@@ -1110,7 +1152,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "/img/maquinas/25035495-1.webp",
       "/img/maquinas/25035495-2.webp",
       "/img/maquinas/25035495-3.webp",
-      "/img/maquinas/25035495-4.webp"
+      "/img/maquinas/25035495-4.webp",
+      "/img/maquinas/25035495-g4.webp"
     ],
     "specs": [
       [
@@ -1141,10 +1184,7 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "jateadora"
     ],
     "imgs": [
-      "/img/maquinas/35239646-1.webp",
-      "/img/maquinas/35239646-2.webp",
-      "/img/maquinas/35239646-3.webp",
-      "/img/maquinas/35239646-4.webp"
+      "/img/maquinas/35239646-1.webp"
     ],
     "specs": [
       [
@@ -1186,7 +1226,13 @@ export const MAQUINAS: MaquinaCatalogo[] = [
     "imgs": [
       "/img/maquinas/278452532-1.webp",
       "/img/maquinas/278452532-2.webp",
-      "/img/maquinas/278452532-3.webp"
+      "/img/maquinas/278452532-3.webp",
+      "/img/maquinas/278452532-d0.webp",
+      "/img/maquinas/278452532-d2.webp",
+      "/img/maquinas/278452532-d4.webp",
+      "/img/maquinas/278452532-d6.webp",
+      "/img/maquinas/278452532-d8.webp",
+      "/img/maquinas/278452532-d9.webp"
     ],
     "specs": [
       [
@@ -1225,7 +1271,10 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "centro-usinagem"
     ],
     "imgs": [
-      "/img/maquinas/398723570-1.webp"
+      "/img/maquinas/398723570-1.webp",
+      "/img/maquinas/398723570-d0.webp",
+      "/img/maquinas/398723570-d1.webp",
+      "/img/maquinas/398723570-d2.webp"
     ],
     "specs": [
       [
@@ -1252,7 +1301,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "forno-eva"
     ],
     "imgs": [
-      "/img/maquinas/398873522-1.webp"
+      "/img/maquinas/398873522-1.webp",
+      "/img/maquinas/398873522-d0.webp"
     ],
     "specs": [
       [
@@ -1362,7 +1412,8 @@ export const MAQUINAS: MaquinaCatalogo[] = [
       "bilateral"
     ],
     "imgs": [
-      "/img/maquinas/237682619-1.webp"
+      "/img/maquinas/237682619-1.webp",
+      "/img/maquinas/237682619-d0.webp"
     ],
     "specs": [
       [
