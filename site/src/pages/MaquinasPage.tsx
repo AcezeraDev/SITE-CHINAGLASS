@@ -3,6 +3,8 @@ import { ArrowRight, ArrowUpRight, Camera, FileImage, Maximize2, Play, Rotate3d,
 import { Ampliar } from "@/components/Ampliar"
 import { VerNaFabrica } from "@/components/VerNaFabrica"
 import { Cursor } from "@/components/Cursor"
+import { CAPAS_MAQUINAS } from "@/capasMaquinas"
+import { fotosDaMaquina, imagemDeEstudio } from "@/lib/galeriaMaquinas"
 import { Filtros } from "@/components/Filtros"
 import { PageHero } from "@/components/PageHero"
 import { VideoModal } from "@/components/VideoModal"
@@ -34,7 +36,7 @@ function Card({ m, onView, onQuote }: { m: MaquinaCatalogo; onView: () => void; 
     <article className="maq-card group flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-ink-2 transition-colors duration-300 hover:border-ice/30">
       <button onClick={onView} className="relative block cursor-pointer overflow-hidden bg-white text-left" aria-label={t("Ver ficha: {nome}", { nome: t(m.nome) })}>
         <img
-          src={m.imgs[0]}
+          src={CAPAS_MAQUINAS[m.id] ?? m.imgs[0]}
           alt={t(m.nome)}
           loading="lazy"
           className="aspect-[4/3] w-full object-contain p-4 transition-transform duration-700 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:scale-105"
@@ -119,6 +121,8 @@ const toque = typeof window !== "undefined" && window.matchMedia("(pointer: coar
 function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: () => void; onQuote: () => void; onVideo: (id: string) => void }) {
   const box = useRef<HTMLDivElement>(null)
   const [foto, setFoto] = useState(0)
+  const imgs = fotosDaMaquina(m)
+  const fotoEstudio = imagemDeEstudio(imgs[foto])
   // item aberto em tela cheia: índice da foto, EM_3D ou nada
   const [ampliado, setAmpliado] = useState<number | null>(null)
   const qual = MODELO_DA_MAQUINA[m.codigo]
@@ -168,8 +172,8 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
               aria-label={t("Ampliar foto")}
               className="group relative cursor-zoom-in overflow-hidden rounded-2xl bg-white"
             >
-              <img src={m.imgs[foto]} alt={t(m.nome)} className="aspect-[4/3] w-full object-contain p-4" />
-              {Modelo && (
+              <img src={imgs[foto]} alt={t(m.nome)} className="aspect-[4/3] w-full object-contain p-4" />
+              {Modelo && !fotoEstudio && (
                 <span className={`${etiqueta} left-3`}>
                   <Camera className="h-3.5 w-3.5" /> {t("Foto real")}
                 </span>
@@ -200,9 +204,9 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
               </div>
             )}
           </div>
-          {m.imgs.length > 1 && (
+          {imgs.length > 1 && (
             <div className={cn("grid gap-2", Modelo ? "grid-cols-5 sm:grid-cols-8" : "grid-cols-5")} role="group" aria-label={t("Fotos")}>
-              {m.imgs.map((src, i) => (
+              {imgs.map((src, i) => (
                 <button
                   key={src}
                   onClick={() => setFoto(i)}
@@ -218,6 +222,7 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
               ))}
             </div>
           )}
+          {fotoEstudio && <p className="text-xs leading-relaxed text-white/50">{t("Imagem de estúdio gerada por IA a partir da foto original.")}</p>}
           <div className={cn("grid gap-3", ar && m.videos.length > 0 && "sm:grid-cols-2")}>
             {m.videos.length > 0 && (
               <button
@@ -373,7 +378,7 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
       </div>
       {ampliado !== null && (
         <div onClick={(e) => e.stopPropagation()}>
-          <Ampliar imgs={m.imgs} alt={t(m.nome)} item={ampliado} Modelo={Modelo || undefined} onItem={setAmpliado} onClose={() => setAmpliado(null)} />
+          <Ampliar imgs={imgs} alt={t(m.nome)} item={ampliado} Modelo={Modelo || undefined} onItem={setAmpliado} onClose={() => setAmpliado(null)} />
         </div>
       )}
     </div>

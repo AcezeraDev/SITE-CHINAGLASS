@@ -6,6 +6,7 @@ import { t } from "@/i18n"
 import { gsap } from "@/lib/motion"
 import { cn } from "@/lib/utils"
 import { PECAS_CATALOGO, type Maquina, type Peca } from "@/pecasData"
+import { FICHAS_PECAS } from "@/pecasFichas"
 import { useQuote } from "./quote"
 
 const FILTROS: ("Todas" | Maquina)[] = ["Todas", "Lapidadora", "Biseladora"]
@@ -36,16 +37,13 @@ function Card({ p, onView }: { p: Peca; onView: () => void }) {
   return (
     <article className="peca-card group relative flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-ink-2 transition-colors duration-300 hover:border-ice/30">
       <button onClick={onView} className="relative block aspect-[4/3] cursor-pointer overflow-hidden text-left" aria-label={t("Ver detalhes: {nome}", { nome: t(p.nome) })}>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,#13254a,#070c18_72%)]" />
-        <div className="blueprint pointer-events-none absolute inset-0 [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-        <CropMarks />
-        <MachineStage src={p.img} alt={t(p.nome)} className="absolute inset-0 px-6 pt-6" />
-        <span className="absolute left-5 top-5 z-20 font-mono text-[10px] uppercase tracking-[0.2em] text-ice">{t(p.maquina)}</span>
+        <img src={p.capa ?? p.img} alt={t(p.nome)} loading="lazy" className="h-full w-full bg-white object-contain" />
         <span className="absolute bottom-4 right-4 z-20 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-white/10 text-white opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
           <Eye className="h-4 w-4" />
         </span>
       </button>
       <div className="flex flex-1 flex-col p-5">
+        <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ice">{t(p.maquina)}</p>
         <h3 className="font-medium leading-snug text-white">{t(p.nome)}</h3>
         <p className="mt-1 font-mono text-[11px] text-white/40">{t("Cód.")} {p.codigo}</p>
         <dl className="mt-4 grid gap-1 font-mono text-[11px]">
@@ -65,28 +63,35 @@ function Card({ p, onView }: { p: Peca; onView: () => void }) {
   )
 }
 
-/** Visão rápida da peça, sem sair da página */
+/** Ficha da peça. O dialog nativo contém o foco e devolve-o ao botão de origem. */
 function QuickView({ p, onClose }: { p: Peca; onClose: () => void }) {
-  const box = useRef<HTMLDivElement>(null)
+  const dialog = useRef<HTMLDialogElement>(null)
+  const ficha = FICHAS_PECAS[p.id]
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose()
-    window.addEventListener("keydown", onKey)
-    box.current?.querySelector<HTMLElement>("button")?.focus()
-    gsap.fromTo(box.current, { y: 40, opacity: 0, scale: 0.97 }, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: "expo.out" })
-    return () => window.removeEventListener("keydown", onKey)
-  }, [onClose])
+    const el = dialog.current
+    el?.showModal()
+    const anterior = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      el?.close()
+      document.body.style.overflow = anterior
+    }
+  }, [])
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end justify-center bg-ink/70 p-0 backdrop-blur-md md:items-center md:p-6" onClick={onClose}>
+    <dialog
+      ref={dialog}
+      aria-labelledby={`peca-titulo-${p.id}`}
+      onCancel={(e) => { e.preventDefault(); onClose() }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+      data-lenis-prevent
+      className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none items-end justify-center bg-transparent p-0 text-white backdrop:bg-ink/70 backdrop:backdrop-blur-md open:flex md:items-center md:p-6"
+    >
       <div
-        ref={box}
-        role="dialog"
-        aria-modal="true"
-        aria-label={t(p.nome)}
         onClick={(e) => e.stopPropagation()}
         data-lenis-prevent
-        className="glass relative grid max-h-[92svh] w-full max-w-4xl overflow-y-auto rounded-t-3xl md:grid-cols-2 md:rounded-3xl"
+        className="glass relative grid max-h-[92svh] w-full max-w-6xl overflow-y-auto rounded-t-3xl pb-[env(safe-area-inset-bottom)] md:grid-cols-[0.9fr_1.1fr] md:rounded-3xl"
       >
         <button
           onClick={onClose}
@@ -95,39 +100,80 @@ function QuickView({ p, onClose }: { p: Peca; onClose: () => void }) {
         >
           <X className="h-4 w-4" />
         </button>
-        <div className="relative aspect-square bg-[radial-gradient(ellipse_at_50%_35%,#13254a,#070c18_72%)] md:aspect-auto md:min-h-[440px]">
-          <div className="blueprint pointer-events-none absolute inset-0 [background-size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-          <CropMarks />
-          <MachineStage src={p.img} alt={t(p.nome)} className="group absolute inset-0 p-8" />
+        <div className="md:sticky md:top-0 md:self-start">
+          <div className="relative aspect-[4/3] bg-ink-2 md:aspect-square">
+            {p.capa ? (
+              <img src={p.capa} alt={t(p.nome)} className="h-full w-full bg-white object-contain" />
+            ) : (
+              <>
+                <CropMarks />
+                <MachineStage src={p.img} alt={t(p.nome)} className="group absolute inset-0 p-8" />
+              </>
+            )}
+          </div>
+          {p.capa && (
+            <div className="border-b border-white/10 bg-ink-2 p-4">
+              <p className="text-xs leading-relaxed text-white/55">{t("Imagem de estúdio gerada por IA a partir da foto original.")}</p>
+            </div>
+          )}
         </div>
         <div className="flex flex-col p-6 md:p-9">
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-ice">{t(p.maquina)}</p>
-          <h2 className="font-wide mt-3 text-2xl font-semibold leading-tight text-white md:text-3xl">{t(p.nome)}</h2>
+          <h2 id={`peca-titulo-${p.id}`} className="font-wide mt-3 text-balance pr-8 text-2xl font-semibold leading-tight text-white md:text-3xl">{t(p.nome)}</h2>
           <p className="mt-2 font-mono text-xs text-white/40">{t("Cód.")} {p.codigo}</p>
-          <p className="mt-6 leading-relaxed text-white/70">{t(p.descricao)}</p>
-          <dl className="mt-6 grid gap-2 border-t border-dashed border-white/12 pt-5 font-mono text-xs">
+          <p className="mt-6 text-pretty text-sm leading-relaxed text-white/75">{t(ficha?.resumo ?? p.descricao)}</p>
+          <h3 className="mt-7 text-base font-semibold text-white">{t("Dados publicados")}</h3>
+          <dl className="mt-3 grid gap-3 border-y border-white/10 py-4 text-sm tabular-nums">
             {p.specs.map(([k, v]) => (
-              <div key={k} className="flex items-baseline gap-2">
-                <dt className="uppercase tracking-[0.1em] text-white/45">{t(k)}</dt>
-                <span className="mb-[3px] flex-1 border-b border-dotted border-white/15" aria-hidden="true" />
-                <dd className="text-white">{t(v)}</dd>
+              <div key={k} className="grid grid-cols-2 gap-4">
+                <dt className="text-white/55">{t(k)}</dt>
+                <dd className="break-words text-right text-white">{t(v)}</dd>
               </div>
             ))}
-            <div className="flex items-baseline gap-2">
-              <dt className="uppercase tracking-[0.1em] text-white/45">{t("Preço")}</dt>
-              <span className="mb-[3px] flex-1 border-b border-dotted border-white/15" aria-hidden="true" />
-              <dd className="text-white">{t("Sob consulta")}</dd>
+            <div className="grid grid-cols-2 gap-4">
+              <dt className="text-white/55">{t("Preço")}</dt>
+              <dd className="text-right text-white">{t("Sob consulta")}</dd>
             </div>
           </dl>
+          {ficha && (
+            <>
+              <section className="mt-7" aria-label={t("Aplicação e compatibilidade")}>
+                <h3 className="text-balance text-base font-semibold text-white">{t("Aplicação e compatibilidade")}</h3>
+                <p className="mt-3 text-pretty text-sm leading-relaxed text-white/70">{t(ficha.aplicacao)}</p>
+              </section>
+              <section className="mt-7" aria-label={t("Antes de pedir esta peça")}>
+                <h3 className="text-balance text-base font-semibold text-white">{t("Antes de pedir esta peça")}</h3>
+                <ol className="mt-4 space-y-3">
+                  {ficha.conferir.map((item, i) => (
+                    <li key={item} className="flex gap-3 text-sm leading-relaxed text-white/70">
+                      <span aria-hidden="true" className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-white/10 font-mono text-xs text-ice tabular-nums">{i + 1}</span>
+                      <span className="text-pretty">{t(item)}</span>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+              <section className="mt-7 rounded-2xl border border-ice/20 bg-ice/5 p-4" aria-label={t("Confirmar na cotação")}>
+                <h3 className="text-base font-semibold text-ice">{t("Confirmar na cotação")}</h3>
+                <p className="mt-2 text-pretty text-xs leading-relaxed text-white/60">{t("Estes dados não estão informados no catálogo. Nossa equipe confirma a versão adequada à sua máquina.")}</p>
+                <ul className="mt-3 list-disc space-y-2 pl-4 text-sm leading-relaxed text-white/80">
+                  {ficha.confirmar.map((item) => <li key={item}>{t(item)}</li>)}
+                </ul>
+              </section>
+              <section className="mt-7" aria-label={t("Orientação de manutenção")}>
+                <h3 className="text-base font-semibold text-white">{t("Orientação de manutenção")}</h3>
+                <p className="mt-3 text-pretty text-sm leading-relaxed text-white/70">{t(ficha.orientacao)}</p>
+              </section>
+            </>
+          )}
           <div className="mt-auto flex flex-wrap items-center gap-3 pt-8">
             <AddButton p={p} />
             <a href={p.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-white/60 transition-colors hover:text-ice">
-              {t("Página no site atual")} <ArrowUpRight className="h-4 w-4" />
+              {t("Fonte: catálogo China Glass")} <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   )
 }
 

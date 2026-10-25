@@ -1,0 +1,344 @@
+[
+  {
+    "id": "180212740",
+    "nome": "Bilateral periférica 12 ou 8 rebolos",
+    "fotoOriginal": "/img/maquinas/180212740-1.webp",
+    "novaCapa": "/img/maquinas/capas/180212740-capa-v2.webp",
+    "bytes": 156494,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "211000219",
+    "nome": "Canteadeira automática",
+    "fotoOriginal": "/img/maquinas/211000219-1.webp",
+    "novaCapa": "/img/maquinas/capas/211000219-capa-v2.webp",
+    "bytes": 71618,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "217194615",
+    "nome": "Linha de corte de vidro laminado",
+    "fotoOriginal": "/img/maquinas/217194615-1.webp",
+    "novaCapa": "/img/maquinas/capas/217194615-capa-v2.webp",
+    "bytes": 60912,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "23523155",
+    "nome": "Lapidadora copo 9 rebolos inox automática",
+    "fotoOriginal": "/img/maquinas/23523155-1.webp",
+    "novaCapa": "/img/maquinas/capas/23523155-capa-v2.webp",
+    "bytes": 108086,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "23525454",
+    "nome": "Furadeira automática duplo cabeçote",
+    "fotoOriginal": "/img/maquinas/23525454-1.webp",
+    "novaCapa": "/img/maquinas/capas/23525454-capa-v2.webp",
+    "bytes": 86418,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "237682619",
+    "nome": "Carregadora para lapidadora bilateral",
+    "fotoOriginal": "/img/maquinas/237682619-1.webp",
+    "novaCapa": "/img/maquinas/capas/237682619-capa-v2.webp",
+    "bytes": 151260,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "242693919",
+    "nome": "Lapidadora copo 10 rebolos inox",
+    "fotoOriginal": "/img/maquinas/242693919-1.webp",
+    "novaCapa": "/img/maquinas/capas/242693919-capa-v2.webp",
+    "bytes": 111142,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "25035495",
+    "nome": "Lavadora vertical Open Top",
+    "fotoOriginal": "/img/maquinas/25035495-1.webp",
+    "novaCapa": "/img/maquinas/capas/25035495-capa-v2.webp",
+    "bytes": 114424,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "25036002",
+    "nome": "Turnover: mesa de transferência automática",
+    "fotoOriginal": "/img/maquinas/25036002-1.webp",
+    "novaCapa": "/img/maquinas/capas/25036002-capa-v2.webp",
+    "bytes": 258790,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "26195533",
+    "nome": "Lapidadora copo 9 rebolos com display digital",
+    "fotoOriginal": "/img/maquinas/26195533-1.webp",
+    "novaCapa": "/img/maquinas/capas/26195533-capa-v2.webp",
+    "bytes": 98258,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "275917064",
+    "nome": "Carregadora para mesa de corte (1 a 6 cavaletes)",
+    "fotoOriginal": "/img/maquinas/275917064-1.webp",
+    "novaCapa": "/img/maquinas/capas/275917064-capa-v2.webp",
+    "bytes": 123592,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "277831702",
+    "nome": "Linha de lapidação bilateral 20 ou 24 motores",
+    "fotoOriginal": "/img/maquinas/277831702-1.webp",
+    "novaCapa": "/img/maquinas/capas/277831702-capa-v2.webp",
+    "bytes": 129696,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "278452532",
+    "nome": "Marcação a laser 140 W",
+    "fotoOriginal": "/img/maquinas/278452532-1.webp",
+    "novaCapa": "/img/maquinas/capas/278452532-capa-v2.webp",
+    "bytes": 94462,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "299665459",
+    "nome": "Lapidadora copo 9 rebolos inox com PLC Siemens",
+    "fotoOriginal": "/img/maquinas/299665459-1.webp",
+    "novaCapa": "/img/maquinas/capas/299665459-capa-v2.webp",
+    "bytes": 90962,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "343610648",
+    "nome": "Carregadora robótica 4 eixos para bilateral",
+    "fotoOriginal": "/img/maquinas/343610648-1.webp",
+    "novaCapa": "/img/maquinas/capas/343610648-capa-v2.webp",
+    "bytes": 106686,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "344423780",
+    "nome": "Mesa de corte CNC XYZ 3600 mm",
+    "fotoOriginal": "/img/maquinas/344423780-1.webp",
+    "novaCapa": "/img/maquinas/capas/344423780-capa-v2.webp",
+    "bytes": 78874,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "34607018",
+    "nome": "Modeladora semi-automática",
+    "fotoOriginal": "/img/maquinas/34607018-1.webp",
+    "novaCapa": "/img/maquinas/capas/34607018-capa-v2.webp",
+    "bytes": 81630,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "34607218",
+    "nome": "Lavadora horizontal inox com turbo ventilador",
+    "fotoOriginal": "/img/maquinas/34607218-1.webp",
+    "novaCapa": "/img/maquinas/capas/34607218-capa-v2.webp",
+    "bytes": 91140,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "35239646",
+    "nome": "Jateadora automática M3",
+    "fotoOriginal": "/img/maquinas/35239646-1.webp",
+    "novaCapa": "/img/maquinas/capas/35239646-capa-v2.webp",
+    "bytes": 87790,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "355640119",
+    "nome": "Mesa de corte CNC basculante 3600 mm",
+    "fotoOriginal": "/img/maquinas/355640119-1.webp",
+    "novaCapa": "/img/maquinas/capas/355640119-capa-v2.webp",
+    "bytes": 85074,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "355775590",
+    "nome": "Mesa de corte de laminado semi-automática",
+    "fotoOriginal": "/img/maquinas/355775590-1.webp",
+    "novaCapa": "/img/maquinas/capas/355775590-capa-v2.webp",
+    "bytes": 90822,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "364216038",
+    "nome": "Carregadora móvel 3660 mm com controle remoto",
+    "fotoOriginal": "/img/maquinas/364216038-1.webp",
+    "novaCapa": "/img/maquinas/capas/364216038-capa-v2.webp",
+    "bytes": 134870,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "380647494",
+    "nome": "Carregadora para lapidadora vertical",
+    "fotoOriginal": "/img/maquinas/380647494-1.webp",
+    "novaCapa": "/img/maquinas/capas/380647494-capa-v2.webp",
+    "bytes": 130120,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "380651875",
+    "nome": "Descarregadora para lapidadora vertical",
+    "fotoOriginal": "/img/maquinas/380651875-1.webp",
+    "novaCapa": "/img/maquinas/capas/380651875-capa-v2.webp",
+    "bytes": 127986,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "384386974",
+    "nome": "Mesa de corte CNC XYZ com braço basculante",
+    "fotoOriginal": "/img/maquinas/384386974-1.webp",
+    "novaCapa": "/img/maquinas/capas/384386974-capa-v2.webp",
+    "bytes": 96164,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "397708527",
+    "nome": "Mesa de corte CNC 4200 × 2800 mm",
+    "fotoOriginal": "/img/maquinas/397708527-1.webp",
+    "novaCapa": "/img/maquinas/capas/397708527-capa-v2.webp",
+    "bytes": 71242,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "398723570",
+    "nome": "Centro de usinagem CNC",
+    "fotoOriginal": "/img/maquinas/398723570-1.webp",
+    "novaCapa": "/img/maquinas/capas/398723570-capa-v2.webp",
+    "bytes": 72924,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "398873522",
+    "nome": "Forno de laminação EVA 3 bandejas",
+    "fotoOriginal": "/img/maquinas/398873522-1.webp",
+    "novaCapa": "/img/maquinas/capas/398873522-capa-v2.webp",
+    "bytes": 68296,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "400260991",
+    "nome": "Elevador a vácuo com braço articulado",
+    "fotoOriginal": "/img/maquinas/400260991-1.webp",
+    "novaCapa": "/img/maquinas/capas/400260991-capa-v2.webp",
+    "bytes": 102088,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "401747573",
+    "nome": "Ventosa pneumática 350 kg",
+    "fotoOriginal": "/img/maquinas/401747573-1.webp",
+    "novaCapa": "/img/maquinas/capas/401747573-capa-v2.webp",
+    "bytes": 119422,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "401747760",
+    "nome": "Ventosa elétrica a bateria 400 kg",
+    "fotoOriginal": "/img/maquinas/401747760-1.webp",
+    "novaCapa": "/img/maquinas/capas/401747760-capa-v2.webp",
+    "bytes": 83720,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "402869343",
+    "nome": "Furadeira 4 posições duplo cabeçote",
+    "fotoOriginal": "/img/maquinas/402869343-1.webp",
+    "novaCapa": "/img/maquinas/capas/402869343-capa-v2.webp",
+    "bytes": 138772,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "55679219",
+    "nome": "Furadeira 3 posições duplo cabeçote",
+    "fotoOriginal": "/img/maquinas/55679219-1.webp",
+    "novaCapa": "/img/maquinas/capas/55679219-capa-v2.webp",
+    "bytes": 146480,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "59082959",
+    "nome": "Lavadora horizontal inox",
+    "fotoOriginal": "/img/maquinas/59082959-1.webp",
+    "novaCapa": "/img/maquinas/capas/59082959-capa-v2.webp",
+    "bytes": 103976,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "81769971",
+    "nome": "Mesa de corte CNC 3 em 1 (3660 mm)",
+    "fotoOriginal": "/img/maquinas/81769971-1.webp",
+    "novaCapa": "/img/maquinas/capas/81769971-capa-v2.webp",
+    "bytes": 94848,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "81770856",
+    "nome": "Linha de corte automática 4200 / 6100 mm (Jumbo)",
+    "fotoOriginal": "/img/maquinas/81770856-1.webp",
+    "novaCapa": "/img/maquinas/capas/81770856-capa-v2.webp",
+    "bytes": 85120,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "81791287",
+    "nome": "Biseladora 9 rebolos",
+    "fotoOriginal": "/img/maquinas/81791287-1.webp",
+    "novaCapa": "/img/maquinas/capas/81791287-capa-v2.webp",
+    "bytes": 113264,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  },
+  {
+    "id": "91095488",
+    "nome": "Lapidadora bilateral 20 rebolos",
+    "fotoOriginal": "/img/maquinas/91095488-1.webp",
+    "novaCapa": "/img/maquinas/capas/91095488-capa-v2.webp",
+    "bytes": 121378,
+    "ferramenta": "imagegen",
+    "textoNaImagem": false
+  }
+]

@@ -536,4 +536,12 @@ const fr: Record<string, string> = {
   "Escova para biseladora China Glass, medida de 100 mm.": "Brosse pour biseauteuse China Glass, dimension 100 mm.",
 }
 
+Object.assign(fr, {
+  "Fotos da peça": "Photos de la pièce",
+  "Imagem de estúdio": "Image de studio",
+  "Foto original": "Photo originale",
+  "Foto de referência do catálogo": "Photo de référence du catalogue",
+  "Imagem de estúdio gerada por IA a partir da foto original.": "Image de studio générée par IA à partir de la photo originale.",
+})
+
 export default fr
