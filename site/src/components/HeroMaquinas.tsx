@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useRef } from "react"
 import { ArrowDown, ArrowRight, ArrowUpRight, ChevronRight, Plus } from "lucide-react"
 import { DiamondMark } from "@/components/Logo"
+import { Magnetic } from "@/components/Magnetic"
 import { SplitWords } from "@/components/SplitWords"
 import { BorderBeam } from "@/components/ui/border-beam"
 import { NumberTicker } from "@/components/ui/number-ticker"
@@ -52,7 +53,10 @@ export function HeroMaquinas({ onLinha }: { onLinha: (slug: string) => void }) {
         .timeline({ defaults: { ease: "expo.out" }, delay: 0.1 })
         .from(".hm-crumb", { y: 16, opacity: 0, duration: 0.9 })
         .from(".hm-title .word", { yPercent: 120, rotate: 5, duration: 1.3, stagger: 0.08 }, "-=0.6")
+        .from(".hm-conta", { scale: 0, opacity: 0, duration: 0.7, ease: "back.out(2.2)" }, "-=0.7")
         .from(".hm-lado > *", { y: 20, opacity: 0, duration: 1, stagger: 0.07 }, "-=1")
+        .from(".hm-placa", { y: 30, scale: 0.96, opacity: 0, duration: 0.9, ease: "back.out(1.6)" }, "-=1")
+        .from(".hm-barra", { scaleX: 0, duration: 1.4, stagger: 0.12, ease: "power3.out" }, "-=0.6")
         .from(".hm-chapa", { y: 60, opacity: 0, scale: 0.97, duration: 1.4 }, "-=1")
         .from(".hm-retalho", { opacity: 0, duration: 1.2, stagger: 0.08 }, "-=1")
     }, root)
@@ -67,7 +71,21 @@ export function HeroMaquinas({ onLinha }: { onLinha: (slug: string) => void }) {
       const st = () => ({ trigger: root.current, start: "top top", end: "bottom top", scrub: 0.7 })
       gsap.to(".hm-fundo", { yPercent: 35, ease: "none", scrollTrigger: st() })
       gsap.to(".hm-brilho", { y: 240, scale: 1.3, ease: "none", scrollTrigger: st() })
-      gsap.to(".hm-texto", { y: -110, opacity: 0.15, ease: "none", scrollTrigger: st() })
+      // o título some antes de encostar na barra do topo; o resto fica um pouco para trás da rolagem
+      const titulo = root.current!.querySelector<HTMLElement>(".hm-title")!
+      gsap.to(".hm-topo", {
+        y: 50,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: root.current,
+          start: "top top",
+          end: () => `+=${Math.max(120, titulo.getBoundingClientRect().top + scrollY - 80)}`,
+          scrub: 0.4,
+          invalidateOnRefresh: true,
+        },
+      })
+      gsap.to(".hm-resto", { y: 70, opacity: 0.2, ease: "none", scrollTrigger: st() })
       gsap.to(".hm-palco", { rotateX: 24, y: -20, scale: 0.93, ease: "none", scrollTrigger: st() })
       gsap.to(".hm-gravado", { y: 80, ease: "none", scrollTrigger: st() })
       gsap.utils.toArray<HTMLElement>(".hm-retalho-rolagem").forEach((el) =>
@@ -146,50 +164,69 @@ export function HeroMaquinas({ onLinha }: { onLinha: (slug: string) => void }) {
   const linhas = CATEGORIAS_MAQUINAS.length
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-ink pb-24 pt-28 md:pb-32 md:pt-36">
+    <section ref={root} className="relative overflow-hidden bg-ink pb-24 pt-28 md:pb-32 md:pt-32">
       <div className="hm-fundo blueprint pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_20%,black,transparent_70%)]" />
       <div className="hm-brilho pointer-events-none absolute left-1/2 top-[38%] h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-azure/15 blur-[160px]" />
 
       <div className="hm-texto relative mx-auto max-w-7xl px-5 md:px-8">
-        <nav aria-label={t("Você está em")} className="hm-crumb flex items-center gap-2 font-wide text-[13px] text-white/50">
-          <a href="/" className="transition-colors hover:text-white">{t("Início")}</a>
-          <ChevronRight className="h-3 w-3" />
-          <span className="text-ice" aria-current="page">{t("Máquinas")}</span>
-        </nav>
+        <div className="hm-topo">
+        {/* trilha de navegação e selo de catálogo na mesma linha */}
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <nav aria-label={t("Você está em")} className="hm-crumb flex items-center gap-2 font-wide text-[13px] text-white/50">
+            <a href="/" className="transition-colors hover:text-white">{t("Início")}</a>
+            <ChevronRight className="h-3 w-3" />
+            <span className="text-ice" aria-current="page">{t("Máquinas")}</span>
+          </nav>
+          <p className="hm-crumb flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-white/55">
+            <span className="flex h-6 w-6 items-center justify-center rounded-md border border-ice/40 bg-ice/[0.06]">
+              <DiamondMark className="h-3 w-3.5 text-ice" />
+            </span>
+            China Glass <span className="text-white/25">/</span> {t("Catálogo completo")}
+          </p>
+        </div>
 
-        {/* selo: diamante num quadrado, como um rótulo de catálogo */}
-        <p className="hm-crumb mt-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.24em] text-white/60 md:mt-14">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md border border-ice/40 bg-ice/[0.06]">
-            <DiamondMark className="h-3 w-3.5 text-ice" />
-          </span>
-          China Glass <span className="text-white/25">/</span> {t("Catálogo completo")}
-        </p>
-
-        <h1 className="hm-title mt-5 font-wide text-[clamp(2.8rem,7.4vw,6.9rem)] font-semibold leading-[0.9] tracking-[-0.035em] text-white md:whitespace-nowrap">
+        {/* título com a contagem pendurada, como o índice de um catálogo impresso */}
+        <h1 className="hm-title relative mt-10 font-wide text-[clamp(2.8rem,7.1vw,6.5rem)] font-semibold leading-[0.88] tracking-[-0.04em] text-white md:mt-14 md:whitespace-nowrap">
           <SplitWords text={t("Todas as")} /> <SplitWords text={t("máquinas.")} className="word text-gradient" />
+          <sup className="hm-conta ml-3 hidden align-top md:inline-block font-mono text-[clamp(0.75rem,1.1vw,1rem)] font-normal tracking-[0.1em] text-ice md:ml-3">
+            ({TOTAL_MAQUINAS})
+          </sup>
         </h1>
+        </div>
 
-        <div className="mt-10 grid gap-10 border-t border-white/10 pt-8 md:mt-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-          {/* números contando e diferenciais */}
-          <div className="hm-lado flex flex-col gap-7">
-            <dl className="grid w-fit grid-cols-3 divide-x divide-white/10">
-              {[
-                [TOTAL_MAQUINAS, t("Máquinas")],
-                [linhas, t("Linhas")],
-                [1, t("Ano de garantia")],
-              ].map(([n, r], i) => (
-                <div key={String(r)} className={i === 0 ? "pr-6 md:pr-10" : "px-6 md:px-10"}>
-                  <dt className="sr-only">{r}</dt>
-                  <dd className="font-wide text-4xl font-semibold tracking-tight text-white md:text-5xl">
-                    <NumberTicker value={Number(n)} delay={0.6 + i * 0.12} />
-                  </dd>
-                  <dd aria-hidden="true" className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">{r}</dd>
-                </div>
-              ))}
-            </dl>
-            <ul className="flex flex-wrap gap-2">
+        <div className="hm-resto mt-10 grid items-end gap-10 md:mt-14 lg:grid-cols-12 lg:gap-12">
+          {/* texto, ações e diferenciais */}
+          <div className="hm-lado flex flex-col gap-7 lg:col-span-6">
+            <p className="max-w-lg text-base leading-relaxed text-white/65 md:text-lg">
+              {t("Separado por linha de produção: abra a ficha técnica de cada máquina e peça o orçamento direto dela.")}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Magnetic strength={0.12}>
+                <button
+                  onClick={() => scrollToId("catalogo")}
+                  className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full bg-white py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink transition-colors hover:bg-ice"
+                >
+                  {t("Ver catálogo")}
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:translate-y-0.5">
+                    <ArrowDown className="h-4 w-4" />
+                  </span>
+                </button>
+              </Magnetic>
+              <Magnetic strength={0.12}>
+                <button
+                  onClick={() => scrollToId("orcamento")}
+                  className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full border border-white/15 py-1.5 pl-5 pr-1.5 text-sm font-medium text-white transition-colors hover:border-ice/50"
+                >
+                  {t("Pedir orçamento")}
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:translate-x-0.5">
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </button>
+              </Magnetic>
+            </div>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/50">
               {[t("Garantia de 1 ano"), t("Instalação e treinamento"), t("Assistência técnica"), t("Peças a pronta entrega")].map((d) => (
-                <li key={d} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] py-1.5 pl-2.5 pr-3.5 text-xs text-white/70 backdrop-blur-md">
+                <li key={d} className="flex items-center gap-2">
                   <Plus className="h-3 w-3 text-ice" />
                   {d}
                 </li>
@@ -197,32 +234,25 @@ export function HeroMaquinas({ onLinha }: { onLinha: (slug: string) => void }) {
             </ul>
           </div>
 
-          {/* texto e ações */}
-          <div className="hm-lado flex flex-col gap-7 lg:items-end lg:text-right">
-            <p className="max-w-md text-base leading-relaxed text-white/65 md:text-lg">
-              {t("O catálogo completo da China Glass, separado pelas mesmas linhas do site atual. Abra a ficha técnica de cada máquina e peça o orçamento direto dela.")}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => scrollToId("catalogo")}
-                className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full bg-white py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink transition-colors hover:bg-ice"
-              >
-                {t("Ver catálogo")}
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:rotate-[-45deg]">
-                  <ArrowDown className="h-4 w-4" />
-                </span>
-              </button>
-              <button
-                onClick={() => scrollToId("orcamento")}
-                className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full border border-white/15 py-1.5 pl-5 pr-1.5 text-sm font-medium text-white transition-colors hover:border-ice/50"
-              >
-                {t("Pedir orçamento")}
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:translate-x-0.5">
-                  <ArrowRight className="h-4 w-4" />
-                </span>
-              </button>
-            </div>
-          </div>
+          {/* números contando numa placa de vidro, com uma barra que enche junto */}
+          <dl className="hm-placa glass grid grid-cols-3 divide-x divide-white/10 rounded-3xl lg:col-span-6 lg:justify-self-end">
+            {[
+              [TOTAL_MAQUINAS, t("Máquinas")],
+              [linhas, t("Linhas")],
+              [1, t("Ano de garantia")],
+            ].map(([n, r], i) => (
+              <div key={String(r)} className="flex flex-col px-5 py-6 md:px-9 md:py-8">
+                <dt className="sr-only">{r}</dt>
+                <dd className="font-wide text-4xl font-semibold tracking-tight text-white md:text-6xl">
+                  <NumberTicker value={Number(n)} delay={0.6 + i * 0.12} />
+                </dd>
+                <dd aria-hidden="true" className="mt-4 h-px w-full bg-white/10">
+                  <span className="hm-barra block h-full origin-left bg-[linear-gradient(90deg,var(--ice),transparent)]" />
+                </dd>
+                <dd aria-hidden="true" className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">{r}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
 

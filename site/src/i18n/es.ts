@@ -339,8 +339,8 @@ const es: Record<string, string> = {
   // máquinas
   "Todas as": "Todas las",
   "máquinas.": "máquinas.",
-  "O catálogo completo da China Glass, separado pelas mesmas linhas do site atual. Abra a ficha técnica de cada máquina e peça o orçamento direto dela.":
-    "El catálogo completo de China Glass, organizado por línea de producto. Abra la ficha técnica de cada máquina y pida el presupuesto desde ella.",
+  "Separado por linha de produção: abra a ficha técnica de cada máquina e peça o orçamento direto dela.":
+    "Organizado por línea de producción: abra la ficha técnica de cada máquina y pida el presupuesto desde ella.",
   "{n} máquinas": "{n} máquinas",
   "{n} máquina": "{n} máquina",
   "{n} linhas": "{n} líneas",

@@ -340,8 +340,8 @@ const en: Record<string, string> = {
   // máquinas
   "Todas as": "All the",
   "máquinas.": "machines.",
-  "O catálogo completo da China Glass, separado pelas mesmas linhas do site atual. Abra a ficha técnica de cada máquina e peça o orçamento direto dela.":
-    "The full China Glass catalog, organized by product line. Open the specifications of each machine and request a quote right from it.",
+  "Separado por linha de produção: abra a ficha técnica de cada máquina e peça o orçamento direto dela.":
+    "Organized by production line: open the specifications of each machine and request a quote right from it.",
   "{n} máquinas": "{n} machines",
   "{n} máquina": "{n} machine",
   "{n} linhas": "{n} lines",
