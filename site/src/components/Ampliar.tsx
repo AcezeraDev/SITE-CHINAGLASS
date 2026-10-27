@@ -1,5 +1,6 @@
 import { Suspense, useCallback, useEffect, useRef, useState, type ComponentType } from "react"
 import { ChevronLeft, ChevronRight, Minus, Plus, RotateCcw, Rotate3d, X } from "lucide-react"
+import { Carregando3D } from "@/components/Carregando3D"
 import { t } from "@/i18n"
 import { cn } from "@/lib/utils"
 import { ZoomVitrine } from "@/three/Vitrine"
@@ -166,7 +167,7 @@ export function Ampliar({
         {item === -1 && Modelo ? (
           <div className="absolute inset-0 bg-[linear-gradient(160deg,#0d1730,#060a14_70%)]">
             <ZoomVitrine.Provider value="total">
-              <Suspense fallback={null}>
+              <Suspense fallback={<Carregando3D className="absolute inset-0" />}>
                 <Modelo className="absolute inset-0" />
               </Suspense>
             </ZoomVitrine.Provider>

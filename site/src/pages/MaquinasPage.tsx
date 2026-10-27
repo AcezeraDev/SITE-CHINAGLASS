@@ -1,5 +1,6 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ArrowRight, ArrowUpRight, Camera, FileImage, Maximize2, Play, Rotate3d, X } from "lucide-react"
+import { Carregando3D } from "@/components/Carregando3D"
 import { Ampliar } from "@/components/Ampliar"
 import { VerNaFabrica } from "@/components/VerNaFabrica"
 import { Cursor } from "@/components/Cursor"
@@ -211,7 +212,7 @@ function Ficha({ m, onClose, onQuote, onVideo }: { m: MaquinaCatalogo; onClose: 
             {Modelo && (
               <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(160deg,#0d1730,#060a14_70%)]">
                 <ZoomVitrine.Provider value="botoes">
-                  <Suspense fallback={null}>
+                  <Suspense fallback={<Carregando3D className="absolute inset-0" />}>
                     <Modelo className="absolute inset-0" />
                   </Suspense>
                 </ZoomVitrine.Provider>

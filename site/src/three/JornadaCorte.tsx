@@ -132,8 +132,17 @@ function Camera() {
 
 export default function JornadaCorte() {
   const wrap = useRef<HTMLDivElement>(null)
-  const { montar, vigiar } = useCanvasNaTela(wrap)
+  // a cena é guiada pela rolagem e tem que estar pronta quando chega na tela: o canvas nasce junto com a página,
+  // desenha um quadro (compila todos os materiais) e fica parado até a seção chegar perto
+  const { montar, vigiar } = useCanvasNaTela(wrap, { margem: "100000px 0px", inicial: true })
+  const [perto, setPerto] = useState(false)
   const [dpr, setDpr] = useState(1.75)
+
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => setPerto(e.isIntersecting), { rootMargin: "100% 0px" })
+    io.observe(wrap.current!)
+    return () => io.disconnect()
+  }, [])
 
   return (
     <div ref={wrap} className="absolute inset-0" aria-hidden="true">
@@ -143,7 +152,7 @@ export default function JornadaCorte() {
           camera={{ position: ROTEIRO[0].pos, fov: ROTEIRO[0].lente, near: 0.05, far: 80 }}
           gl={{ antialias: true, alpha: true }}
           // o movimento vem do scroll de quem lê, então segue rodando mesmo com movimento reduzido
-          frameloop="always"
+          frameloop={perto ? "always" : "demand"}
           onCreated={({ gl }) => {
             vigiar(gl)
             gl.toneMapping = THREE.ACESFilmicToneMapping

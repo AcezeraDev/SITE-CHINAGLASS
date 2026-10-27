@@ -6,6 +6,8 @@ import * as THREE from "three"
 import { t } from "@/i18n"
 import { prefersReducedMotion } from "@/lib/motion"
 import { useCanvasNaTela } from "@/lib/webgl"
+import { Carregando3D } from "@/components/Carregando3D"
+import { Entrada, Pronto, useRevelar } from "./Revelar"
 
 /*
  * Palco comum dos modelos 3D de máquinas: luzes, sombra no chão, câmera enquadrada e arrasto para girar.
@@ -67,7 +69,7 @@ export function useLogo(cor = "#11141c") {
     g.lineWidth = 2.2
     for (const d of DIAMANTE) g.stroke(new Path2D(d))
     g.restore()
-    g.font = "600 64px 'Archivo', 'Arial Narrow', sans-serif"
+    g.font = "600 64px 'Clash Display', 'Arial Narrow', sans-serif"
     g.textAlign = "center"
     g.fillText("CHINA GLASS", 256, 320)
     const tex = new THREE.CanvasTexture(c)
@@ -142,6 +144,7 @@ export function Vitrine({
 }) {
   const wrap = useRef<HTMLDivElement>(null)
   const { montar, vigiar } = useCanvasNaTela(wrap)
+  const { pronto, aoPronto, classe } = useRevelar(montar)
   const [toque] = useState(() => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches)
   const reduced = prefersReducedMotion()
   const inicio = useMemo(() => alvo.clone().addScaledVector(direcao.clone().normalize(), 10), [alvo, direcao])
@@ -152,7 +155,9 @@ export function Vitrine({
 
   return (
     <div ref={wrap} className={className}>
-      <div className="h-full w-full" role="img" aria-label={label}>
+      <div className="relative h-full w-full" role="img" aria-label={label}>
+        <Carregando3D className={`absolute inset-0 transition-opacity duration-500 ${pronto ? "opacity-0" : "opacity-100"}`} />
+        <div className={`absolute inset-0 ${classe}`}>
         {montar && (
           <Canvas
             shadows
@@ -179,7 +184,8 @@ export function Vitrine({
               <Lightformer form="rect" intensity={2} position={[0, 1, -9]} rotation-y={Math.PI} scale={[10, 5, 1]} />
             </Environment>
 
-            {children(!reduced)}
+            <Entrada animado={!reduced}>{children(!reduced)}</Entrada>
+            <Pronto aoPronto={aoPronto} />
             <Enquadrar alvo={alvo} raio={raio} direcao={direcao} limites={limites} />
             {zoom && <Aproximar acao={aproximar} alvo={alvo} limites={limites} />}
             <ContactShadows position={[0, 0, 0]} opacity={0.55} scale={sombra} blur={2.4} far={3} color="#000814" />
@@ -195,6 +201,7 @@ export function Vitrine({
             )}
           </Canvas>
         )}
+        </div>
       </div>
       {zoom && (
         <div className="absolute bottom-3 right-3 z-20 flex gap-1.5">

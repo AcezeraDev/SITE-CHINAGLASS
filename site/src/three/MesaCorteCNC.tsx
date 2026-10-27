@@ -51,7 +51,7 @@ function useFaixa() {
     g.fillRect(0, 0, c.width, c.height)
     g.fillStyle = "#16181d"
     for (const x0 of [40, 860]) for (let k = 0; k < 3; k++) g.fillRect(x0 + k * 36, 14, 16, 68)
-    g.font = "800 64px 'Archivo', 'Arial', sans-serif"
+    g.font = "800 64px 'Clash Display', 'Arial', sans-serif"
     g.textAlign = "center"
     g.textBaseline = "middle"
     g.fillText("CHINA GLASS", 512, 52)

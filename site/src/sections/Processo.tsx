@@ -1,5 +1,6 @@
 import { Suspense, useEffect, useRef } from "react"
 import { ArrowUpRight, Camera, Rotate3d } from "lucide-react"
+import { Carregando3D } from "@/components/Carregando3D"
 import { DiamondMark } from "@/components/Logo"
 import { CropMarks, MachineStage } from "@/components/MachineStage"
 import { PROCESSO } from "@/data"
@@ -129,7 +130,7 @@ export function Processo() {
                   </span>
                 </div>
                 <div className="relative">
-                  <Suspense fallback={null}>
+                  <Suspense fallback={<Carregando3D className="absolute inset-0" />}>
                     <Modelo3D qual={e.modelo3d} />
                   </Suspense>
                   <span className={`${etiqueta} right-4 md:right-6`}>

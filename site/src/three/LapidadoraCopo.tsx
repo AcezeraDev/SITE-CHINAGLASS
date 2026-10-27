@@ -53,7 +53,7 @@ function usePainel() {
     for (const d of ["M4 18 16 4h32l12 14L32 52z", "M4 18h56", "M22 18l10 34 10-34"]) g.stroke(new Path2D(d))
     g.restore()
     g.fillStyle = "#e8ecf2"
-    g.font = "600 30px 'Archivo', Arial, sans-serif"
+    g.font = "600 30px 'Clash Display', Arial, sans-serif"
     g.textAlign = "center"
     g.fillText("CHINA GLASS", 125, 210)
     // amperímetros

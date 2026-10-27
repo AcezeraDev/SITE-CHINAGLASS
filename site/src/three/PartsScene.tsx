@@ -4,6 +4,7 @@ import { Environment, Float, Lightformer } from "@react-three/drei"
 import * as THREE from "three"
 import { pointer, prefersReducedMotion, scrollState } from "@/lib/motion"
 import { useCanvasNaTela } from "@/lib/webgl"
+import { Entrada, Pronto, useRevelar } from "./Revelar"
 
 /* ---------- engrenagem: perfil de dentes trapezoidais, extrudado ---------- */
 
@@ -161,6 +162,7 @@ function Parts({ mobile }: { mobile: boolean }) {
 export default function PartsScene() {
   const wrap = useRef<HTMLDivElement>(null)
   const { montar, vigiar } = useCanvasNaTela(wrap, { inicial: true })
+  const { aoPronto, classe } = useRevelar(montar)
   const [mobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768)
   const reduced = prefersReducedMotion()
 
@@ -173,7 +175,7 @@ export default function PartsScene() {
   }, [])
 
   return (
-    <div ref={wrap} className="absolute inset-0" aria-hidden="true">
+    <div ref={wrap} className={`absolute inset-0 ${classe}`} aria-hidden="true">
       {montar && (
         <Canvas
           dpr={[1, 1.75]}
@@ -194,7 +196,10 @@ export default function PartsScene() {
             <Lightformer form="rect" intensity={1.5} color="#9fb4d6" position={[0, -5, 0]} rotation-x={-Math.PI / 2} scale={[12, 12, 1]} />
             <Lightformer form="rect" intensity={2.5} position={[0, 0, 8]} scale={[10, 6, 1]} />
           </Environment>
-          <Parts mobile={mobile} />
+          <Entrada animado={!reduced} de={0.8} queda={0.5} giro={0.8}>
+            <Parts mobile={mobile} />
+          </Entrada>
+          <Pronto aoPronto={aoPronto} />
         </Canvas>
       )}
     </div>

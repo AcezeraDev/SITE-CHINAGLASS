@@ -79,7 +79,7 @@ function useFaixa() {
     g.moveTo(0, 0); g.lineTo(880, 0); g.lineTo(1024, 160); g.lineTo(0, 160)
     g.closePath(); g.fill()
     g.fillStyle = "#f2f4f7"
-    g.font = "700 96px 'Archivo', 'Arial', sans-serif"
+    g.font = "700 96px 'Clash Display', 'Arial', sans-serif"
     g.textAlign = "center"
     g.textBaseline = "middle"
     g.fillText("CHINA GLASS", 470, 86)

@@ -1,18 +1,16 @@
-import { Suspense, lazy, useEffect, useRef } from "react"
-import { ArrowDown, ArrowRight, ArrowUpRight, ChevronRight, Plus } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react"
+import { ArrowDown, ArrowRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { DiamondMark } from "@/components/Logo"
 import { Magnetic } from "@/components/Magnetic"
 import { SplitWords } from "@/components/SplitWords"
-import { BorderBeam } from "@/components/ui/border-beam"
 import { NumberTicker } from "@/components/ui/number-ticker"
 import { t } from "@/i18n"
 import { gsap, prefersReducedMotion, scrollToId } from "@/lib/motion"
 import { CATEGORIAS_MAQUINAS, TOTAL_MAQUINAS } from "@/maquinasCategorias"
 
-const DiamanteVidro = lazy(() => import("@/three/DiamanteVidro"))
-
-// uma máquina de cada linha, com fundo recortado, na ordem em que passam na esteira
-const ESTEIRA = [
+// uma máquina de cada linha, com fundo recortado, na ordem do processo
+const LINHAS = [
   { img: "/img/mesa-3em1-cut.webp", linha: "mesa-de-corte" },
   { img: "/img/lapidadora-copo-10-cut.webp", linha: "lapidacao" },
   { img: "/img/bilateral-20-cut.webp", linha: "bilateral" },
@@ -25,152 +23,74 @@ const ESTEIRA = [
   { img: "/img/carregadora-mesa-cut.webp", linha: "carregadoras" },
 ].map((m) => ({ ...m, cat: CATEGORIAS_MAQUINAS.find((c) => c.slug === m.linha)! }))
 
-// peças na frente do vidro, como retalhos da produção
-const RETALHOS = [
-  { img: "/img/pecas/bomba-agua-cut.webp", pos: "left-[4%] -bottom-10", h: "h-24 md:h-32", d: 0, prof: 1 },
-  { img: "/img/pecas/correia-cut.webp", pos: "left-[24%] -bottom-8", h: "h-14 md:h-20", d: -1.2, prof: 0.55 },
-  { img: "/img/pecas/coifa-lapidadora-100-cut.webp", pos: "right-[30%] -bottom-9", h: "h-16 md:h-24", d: -2.1, prof: 0.8 },
-  { img: "/img/pecas/amperimetro-cut.webp", pos: "hidden md:block right-[47%] -bottom-7", h: "h-16", d: -0.6, prof: 0.4 },
-]
-const VELOCIDADE = 46 // px por segundo
-const CHAPA_MM = 3660 // largura da chapa na régua, como numa mesa de corte
-const regua = Array.from({ length: 19 }, (_, i) => i * 250)
+const INTERVALO = 4.2 // segundos em cada linha antes de passar para a próxima
+const MOLA = { type: "spring", stiffness: 300, damping: 30, mass: 1 } as const
+const num = (i: number) => String(i + 1).padStart(2, "0")
 
-/** Abertura do catálogo: título largo e as máquinas passando numa esteira sobre uma chapa de vidro com o logo gravado */
+/** Abertura do catálogo: título à esquerda e, à direita, uma vitrine que troca de máquina conforme a linha escolhida no índice */
 export function HeroMaquinas({ onLinha }: { onLinha: (slug: string) => void }) {
   const root = useRef<HTMLElement>(null)
-  const chapa = useRef<HTMLDivElement>(null)
-  const trilho = useRef<HTMLDivElement>(null)
-  const roletes = useRef<HTMLDivElement>(null)
-  const ponte = useRef<HTMLDivElement>(null)
-  const ponteMm = useRef<HTMLSpanElement>(null)
+  const [ativo, setAtivo] = useState(0)
+  const [parado, setParado] = useState(false)
+  const [naTela, setNaTela] = useState(true)
+  const reduzido = useRef(prefersReducedMotion()).current
+  const linha = LINHAS[ativo]
 
-  // entrada
+  // inclinação da máquina seguindo o mouse, com mola
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-9, 9]), MOLA)
+  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [6, -6]), MOLA)
+  const luzX = useSpring(useTransform(mx, [-0.5, 0.5], [30, 70]), MOLA)
+  const luz = useTransform(luzX, (x) => `radial-gradient(ellipse 55% 45% at ${x}% 62%, rgba(143,233,255,0.18), transparent 70%)`)
+
+  // passa sozinho de linha em linha; para com o mouse em cima, fora da tela ou com movimento reduzido
   useEffect(() => {
-    if (prefersReducedMotion()) return
+    if (reduzido || parado || !naTela) return
+    const id = setTimeout(() => setAtivo((a) => (a + 1) % LINHAS.length), INTERVALO * 1000)
+    return () => clearTimeout(id)
+  }, [ativo, parado, naTela, reduzido])
+
+  useEffect(() => {
+    const io = new IntersectionObserver(([e]) => setNaTela(e.isIntersecting))
+    io.observe(root.current!)
+    return () => io.disconnect()
+  }, [])
+
+  // carrega as fotos de antemão para a troca não piscar
+  useEffect(() => {
+    LINHAS.forEach((l) => (new Image().src = l.img))
+  }, [])
+
+  // entrada e paralaxe de rolagem
+  useEffect(() => {
+    if (reduzido) return
     const ctx = gsap.context(() => {
       gsap
         .timeline({ defaults: { ease: "expo.out" }, delay: 0.1 })
         .from(".hm-crumb", { y: 16, opacity: 0, duration: 0.9 })
         .from(".hm-title .word", { yPercent: 120, rotate: 5, duration: 1.3, stagger: 0.08 }, "-=0.6")
-        .from(".hm-conta", { scale: 0, opacity: 0, duration: 0.7, ease: "back.out(2.2)" }, "-=0.7")
+        .from(".hm-conta", { scale: 0, opacity: 0, duration: 0.7, ease: "back.out(2.2)" }, "-=0.8")
         .from(".hm-lado > *", { y: 20, opacity: 0, duration: 1, stagger: 0.07 }, "-=1")
-        .from(".hm-placa", { y: 30, scale: 0.96, opacity: 0, duration: 0.9, ease: "back.out(1.6)" }, "-=1")
-        .from(".hm-barra", { scaleX: 0, duration: 1.4, stagger: 0.12, ease: "power3.out" }, "-=0.6")
-        .from(".hm-chapa", { y: 60, opacity: 0, scale: 0.97, duration: 1.4 }, "-=1")
-        .from(".hm-retalho", { opacity: 0, duration: 1.2, stagger: 0.08 }, "-=1")
+        .from(".hm-vitrine", { y: 70, opacity: 0, scale: 0.96, duration: 1.4 }, "-=1.2")
+        .from(".hm-indice li", { x: 24, opacity: 0, duration: 0.8, stagger: 0.04 }, "-=1")
+      const st = { trigger: root.current, start: "top top", end: "bottom top", scrub: 0.6 }
+      gsap.to(".hm-fundo", { yPercent: 30, ease: "none", scrollTrigger: st })
+      gsap.to(".hm-texto", { y: 80, opacity: 0, ease: "none", scrollTrigger: { ...st, end: "60% top" } })
+      gsap.to(".hm-vitrine", { y: -40, scale: 0.97, ease: "none", scrollTrigger: st })
     }, root)
     return () => ctx.revert()
-  }, [])
-
-  // paralaxe: ao rolar, cada camada anda numa velocidade e a chapa deita como vidro sobre a mesa;
-  // com o mouse, as peças da frente e o diamante gravado se deslocam em profundidades diferentes
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    const ctx = gsap.context(() => {
-      const st = () => ({ trigger: root.current, start: "top top", end: "bottom top", scrub: 0.7 })
-      gsap.to(".hm-fundo", { yPercent: 35, ease: "none", scrollTrigger: st() })
-      gsap.to(".hm-brilho", { y: 240, scale: 1.3, ease: "none", scrollTrigger: st() })
-      // o título some antes de encostar na barra do topo; o resto fica um pouco para trás da rolagem
-      const titulo = root.current!.querySelector<HTMLElement>(".hm-title")!
-      gsap.to(".hm-topo", {
-        y: 50,
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: root.current,
-          start: "top top",
-          end: () => `+=${Math.max(120, titulo.getBoundingClientRect().top + scrollY - 80)}`,
-          scrub: 0.4,
-          invalidateOnRefresh: true,
-        },
-      })
-      gsap.to(".hm-resto", { y: 70, opacity: 0.2, ease: "none", scrollTrigger: st() })
-      gsap.to(".hm-palco", { rotateX: 24, y: -20, scale: 0.93, ease: "none", scrollTrigger: st() })
-      gsap.to(".hm-gravado", { y: 80, ease: "none", scrollTrigger: st() })
-      gsap.utils.toArray<HTMLElement>(".hm-retalho-rolagem").forEach((el) =>
-        gsap.to(el, { y: -Number(el.dataset.prof) * 280, rotate: (Number(el.dataset.prof) - 0.6) * 18, ease: "none", scrollTrigger: st() })
-      )
-    }, root)
-    if (!window.matchMedia("(pointer: fine)").matches) return () => ctx.revert()
-    const camadas = gsap.utils.toArray<HTMLElement>(".hm-retalho-mouse", root.current).map((el) => ({
-      prof: Number(el.dataset.prof),
-      x: gsap.quickTo(el, "x", { duration: 1, ease: "power3" }),
-      y: gsap.quickTo(el, "y", { duration: 1, ease: "power3" }),
-    }))
-    const gx = gsap.quickTo(".hm-gravado-mouse", "x", { duration: 1.4, ease: "power3" })
-    const gy = gsap.quickTo(".hm-gravado-mouse", "y", { duration: 1.4, ease: "power3" })
-    const ry = gsap.quickTo(".hm-palco", "rotationY", { duration: 1.2, ease: "power3" })
-    const move = (e: PointerEvent) => {
-      const nx = e.clientX / innerWidth - 0.5
-      const ny = e.clientY / innerHeight - 0.5
-      for (const c of camadas) {
-        c.x(nx * c.prof * 60)
-        c.y(ny * c.prof * 36)
-      }
-      gx(-nx * 26)
-      gy(-ny * 16)
-      ry(nx * 5)
-    }
-    window.addEventListener("pointermove", move)
-    return () => {
-      window.removeEventListener("pointermove", move)
-      ctx.revert()
-    }
-  }, [])
-
-  // esteira: anda sozinha, freia com o mouse em cima e a máquina no meio da chapa cresce e acende
-  useEffect(() => {
-    const box = chapa.current!
-    const el = trilho.current!
-    if (prefersReducedMotion()) return
-    const itens = [...el.children] as HTMLElement[]
-    const vel = { v: VELOCIDADE }
-    let x = 0
-    const tick = (tempo: number, dt: number) => {
-      // ponte de corte vai e volta devagar sobre a chapa, mostrando a posição na régua
-      const vai = (Math.sin(tempo * 0.32) + 1) / 2
-      if (ponte.current) ponte.current.style.transform = `translate3d(${vai * (box.clientWidth - 120) + 60}px,0,0)`
-      if (ponteMm.current) {
-        ponteMm.current.textContent = `X ${(vai * CHAPA_MM).toFixed(1)}`
-        // da metade para a direita a etiqueta passa para o outro lado da ponte, para não sair da chapa
-        ponteMm.current.style.transform = vai > 0.5 ? "translateX(calc(-100% - 24px))" : ""
-      }
-      const metade = el.scrollWidth / 2
-      x = (x - (vel.v * dt) / 1000) % metade
-      el.style.transform = `translate3d(${x}px,0,0)`
-      if (roletes.current) roletes.current.style.backgroundPositionX = `${x}px`
-      const w = box.clientWidth
-      const centro = w / 2
-      for (const it of itens) {
-        const meio = it.offsetLeft + x + it.offsetWidth / 2
-        const p = Math.max(0, 1 - Math.abs(meio - centro) / (w * 0.42))
-        const s = p * p * (3 - 2 * p)
-        it.style.setProperty("--p", s.toFixed(3))
-      }
-    }
-    gsap.ticker.add(tick)
-    const frear = () => gsap.to(vel, { v: 0, duration: 0.8, ease: "power2.out" })
-    const soltar = () => gsap.to(vel, { v: VELOCIDADE, duration: 1.2, ease: "power2.in" })
-    box.addEventListener("pointerenter", frear)
-    box.addEventListener("pointerleave", soltar)
-    return () => {
-      gsap.ticker.remove(tick)
-      box.removeEventListener("pointerenter", frear)
-      box.removeEventListener("pointerleave", soltar)
-    }
-  }, [])
+  }, [reduzido])
 
   const linhas = CATEGORIAS_MAQUINAS.length
 
   return (
-    <section ref={root} className="relative overflow-hidden bg-ink pb-24 pt-28 md:pb-32 md:pt-32">
-      <div className="hm-fundo blueprint pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_20%,black,transparent_70%)]" />
-      <div className="hm-brilho pointer-events-none absolute left-1/2 top-[38%] h-[36rem] w-[60rem] -translate-x-1/2 rounded-full bg-azure/15 blur-[160px]" />
+    <section ref={root} className="relative overflow-hidden bg-ink pb-20 pt-28 md:pb-28 md:pt-32">
+      <div className="hm-fundo blueprint pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_40%,black,transparent_70%)]" />
+      <div className="pointer-events-none absolute right-[-10%] top-[20%] h-[40rem] w-[50rem] rounded-full bg-azure/15 blur-[160px]" />
 
-      <div className="hm-texto relative mx-auto max-w-7xl px-5 md:px-8">
-        <div className="hm-topo">
-        {/* trilha de navegação e selo de catálogo na mesma linha */}
+      <div className="relative mx-auto max-w-7xl px-5 md:px-8">
+        {/* trilha de navegação e selo de catálogo */}
         <div className="flex flex-wrap items-center justify-between gap-4">
           <nav aria-label={t("Você está em")} className="hm-crumb flex items-center gap-2 font-wide text-[13px] text-white/50">
             <a href="/" className="transition-colors hover:text-white">{t("Início")}</a>
@@ -185,210 +105,193 @@ export function HeroMaquinas({ onLinha }: { onLinha: (slug: string) => void }) {
           </p>
         </div>
 
-        {/* título com a contagem pendurada, como o índice de um catálogo impresso */}
-        <h1 className="hm-title relative mt-10 font-wide text-[clamp(2.8rem,7.1vw,6.5rem)] font-semibold leading-[0.88] tracking-[-0.04em] text-white md:mt-14 md:whitespace-nowrap">
-          <SplitWords text={t("Todas as")} /> <SplitWords text={t("máquinas.")} className="word text-gradient" />
-          <sup className="hm-conta ml-3 hidden align-top md:inline-block font-mono text-[clamp(0.75rem,1.1vw,1rem)] font-normal tracking-[0.1em] text-ice md:ml-3">
-            ({TOTAL_MAQUINAS})
-          </sup>
-        </h1>
-        </div>
+        <div className="mt-10 grid items-center gap-12 md:mt-14 lg:grid-cols-12 lg:gap-10">
+          {/* texto, ações e números */}
+          <div className="hm-texto lg:col-span-5">
+            <h1 className="hm-title font-wide text-[clamp(2.7rem,6vw,5.4rem)] font-semibold leading-[0.9] tracking-[-0.04em] text-white">
+              <SplitWords text={t("Todas as")} />
+              <br />
+              <span className="whitespace-nowrap">
+                <SplitWords text={t("máquinas.")} className="word text-gradient" />
+                <sup className="hm-conta ml-2 inline-block align-top font-mono text-[clamp(0.75rem,1vw,0.95rem)] font-normal tracking-[0.1em] text-ice">
+                  ({TOTAL_MAQUINAS})
+                </sup>
+              </span>
+            </h1>
 
-        <div className="hm-resto mt-10 grid items-end gap-10 md:mt-14 lg:grid-cols-12 lg:gap-12">
-          {/* texto, ações e diferenciais */}
-          <div className="hm-lado flex flex-col gap-7 lg:col-span-6">
-            <p className="max-w-lg text-base leading-relaxed text-white/65 md:text-lg">
-              {t("Separado por linha de produção: abra a ficha técnica de cada máquina e peça o orçamento direto dela.")}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Magnetic strength={0.12}>
-                <button
-                  onClick={() => scrollToId("catalogo")}
-                  className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full bg-white py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink transition-colors hover:bg-ice"
-                >
-                  {t("Ver catálogo")}
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:translate-y-0.5">
-                    <ArrowDown className="h-4 w-4" />
-                  </span>
-                </button>
-              </Magnetic>
-              <Magnetic strength={0.12}>
-                <button
-                  onClick={() => scrollToId("orcamento")}
-                  className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full border border-white/15 py-1.5 pl-5 pr-1.5 text-sm font-medium text-white transition-colors hover:border-ice/50"
-                >
-                  {t("Pedir orçamento")}
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:translate-x-0.5">
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </button>
-              </Magnetic>
-            </div>
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/50">
-              {[t("Garantia de 1 ano"), t("Instalação e treinamento"), t("Assistência técnica"), t("Peças a pronta entrega")].map((d) => (
-                <li key={d} className="flex items-center gap-2">
-                  <Plus className="h-3 w-3 text-ice" />
-                  {d}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* números contando numa placa de vidro, com uma barra que enche junto */}
-          <dl className="hm-placa glass grid grid-cols-3 divide-x divide-white/10 rounded-3xl lg:col-span-6 lg:justify-self-end">
-            {[
-              [TOTAL_MAQUINAS, t("Máquinas")],
-              [linhas, t("Linhas")],
-              [1, t("Ano de garantia")],
-            ].map(([n, r], i) => (
-              <div key={String(r)} className="flex flex-col px-5 py-6 md:px-9 md:py-8">
-                <dt className="sr-only">{r}</dt>
-                <dd className="font-wide text-4xl font-semibold tracking-tight text-white md:text-6xl">
-                  <NumberTicker value={Number(n)} delay={0.6 + i * 0.12} />
-                </dd>
-                <dd aria-hidden="true" className="mt-4 h-px w-full bg-white/10">
-                  <span className="hm-barra block h-full origin-left bg-[linear-gradient(90deg,var(--ice),transparent)]" />
-                </dd>
-                <dd aria-hidden="true" className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">{r}</dd>
+            <div className="hm-lado mt-8 flex flex-col gap-8">
+              <p className="max-w-md text-base leading-relaxed text-white/65 md:text-lg">
+                {t("Separado por linha de produção: abra a ficha técnica de cada máquina e peça o orçamento direto dela.")}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Magnetic strength={0.12}>
+                  <button
+                    onClick={() => scrollToId("catalogo")}
+                    className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full bg-white py-1.5 pl-5 pr-1.5 text-sm font-medium text-ink transition-colors hover:bg-ice"
+                  >
+                    {t("Ver catálogo")}
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-white transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:translate-y-0.5">
+                      <ArrowDown className="h-4 w-4" />
+                    </span>
+                  </button>
+                </Magnetic>
+                <Magnetic strength={0.12}>
+                  <button
+                    onClick={() => scrollToId("orcamento")}
+                    className="group inline-flex h-12 cursor-pointer items-center gap-3 rounded-full border border-white/15 py-1.5 pl-5 pr-1.5 text-sm font-medium text-white transition-colors hover:border-ice/50"
+                  >
+                    {t("Pedir orçamento")}
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:translate-x-0.5">
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </button>
+                </Magnetic>
               </div>
-            ))}
-          </dl>
-        </div>
-      </div>
 
-      {/* a chapa de vidro com a esteira */}
-      <div className="relative mt-10 px-3 [perspective:1600px] md:mt-12 md:px-8">
-        <div className="hm-palco origin-bottom [transform-style:preserve-3d]">
-        <div
-          ref={chapa}
-          className="hm-chapa vitrine-chapa relative mx-auto h-[300px] max-w-[1600px] overflow-hidden rounded-[2rem] md:h-[400px] md:rounded-[2.5rem]"
-        >
-          {/* gravado no vidro: o diamante e o nome */}
-          <div className="blueprint pointer-events-none absolute inset-0 [background-size:28px_28px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
-          <div className="pointer-events-none absolute inset-y-0 left-1/2 w-[38%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(143,233,255,0.16),transparent_65%)]" />
-          <div className="hm-gravado pointer-events-none absolute inset-0">
-            <div className="hm-gravado-mouse absolute inset-0">
-              <Suspense fallback={<DiamondMark draw className="absolute left-1/2 top-1/2 h-[70%] w-auto -translate-x-1/2 -translate-y-[54%] text-ice/[0.13]" />}>
-                <DiamanteVidro className="absolute left-1/2 top-[-12%] h-[96%] w-[42%] -translate-x-1/2 opacity-80 mix-blend-screen" />
-              </Suspense>
+              {/* números lado a lado, separados por fios */}
+              <dl className="grid max-w-md grid-cols-3 border-t border-white/10">
+                {[
+                  [TOTAL_MAQUINAS, t("Máquinas")],
+                  [linhas, t("Linhas")],
+                  [1, t("Ano de garantia")],
+                ].map(([n, r], i) => (
+                  <div key={String(r)} className="flex flex-col-reverse gap-1 border-white/10 pt-5 [&:not(:first-child)]:border-l [&:not(:first-child)]:pl-5">
+                    <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">{r}</dt>
+                    <dd className="font-wide text-3xl font-semibold tracking-tight text-white md:text-4xl">
+                      <NumberTicker value={Number(n)} delay={0.6 + i * 0.12} />
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           </div>
 
-          <BorderBeam size={220} duration={11} colorFrom="#8fe9ff" colorTo="#2f7bff" borderWidth={1.5} />
-          <BorderBeam size={140} duration={11} delay={5.5} colorFrom="#ffffff" colorTo="#8fe9ff" borderWidth={1} />
-
-          {/* aresta lapidada brilhando no topo */}
-          <span className="pointer-events-none absolute inset-x-[8%] top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.7),rgba(143,233,255,0.6),transparent)]" />
-
-          {/* régua da mesa de corte */}
-          <div className="pointer-events-none absolute inset-x-12 top-0 h-6 overflow-hidden md:inset-x-16" aria-hidden="true">
-            <div className="absolute inset-x-0 top-0 h-[5px] [background-image:repeating-linear-gradient(90deg,rgba(255,255,255,0.22)_0_1px,transparent_1px_10px)]" />
-            <div className="absolute inset-x-0 top-0 h-[10px] [background-image:repeating-linear-gradient(90deg,rgba(143,233,255,0.5)_0_1px,transparent_1px_100px)]" />
-            {regua.map((mm, i) => (
-              <span key={mm} className="absolute top-[11px] -translate-x-1/2 font-mono text-[8px] text-white/30" style={{ left: i * 100 }}>
-                {mm}
-              </span>
-            ))}
-          </div>
-
-          {/* fixadores de inox nos cantos, como num painel de vidro */}
-          {["left-3 top-3", "right-3 top-3", "left-3 bottom-3", "right-3 bottom-3"].map((c) => (
-            <span
-              key={c}
-              aria-hidden="true"
-              className={`pointer-events-none absolute z-20 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#ffffff,#a9b5c6_38%,#3b4658_78%)] shadow-[0_2px_6px_rgba(0,0,0,0.6),inset_0_0_0_1px_rgba(255,255,255,0.25)] ${c}`}
-            >
-              <span className="h-[1.5px] w-2 rotate-45 rounded-full bg-[#2a3342]" />
-            </span>
-          ))}
-
-          <span className="pointer-events-none absolute left-6 top-9 font-wide text-[10px] font-semibold tracking-[0.42em] text-white/45 md:left-10 md:top-10 md:text-[11px]">CHINA GLASS</span>
-          <span className="pointer-events-none absolute right-6 top-9 font-mono text-[10px] uppercase tracking-[0.18em] text-white/35 md:right-10 md:top-10">
-            {t("{n} linhas", { n: linhas })} · {CHAPA_MM} mm
-          </span>
-
-          {/* ponte de corte CNC atravessando a chapa */}
-          <div ref={ponte} className="pointer-events-none absolute bottom-[34px] left-0 top-6 z-10 w-0 md:bottom-[42px]" style={{ transform: "translate3d(30vw,0,0)" }} aria-hidden="true">
-            <span className="absolute inset-y-0 -left-px w-[2px] bg-[linear-gradient(to_bottom,rgba(143,233,255,0.9),rgba(143,233,255,0.15)_70%,transparent)] shadow-[0_0_14px_rgba(143,233,255,0.7)]" />
-            <span className="absolute inset-y-0 -left-8 w-16 bg-[linear-gradient(90deg,transparent,rgba(143,233,255,0.07),transparent)]" />
-            <span className="absolute -left-[7px] -top-1 h-3.5 w-3.5 rotate-45 rounded-[3px] border border-ice/80 bg-ink shadow-[0_0_10px_rgba(143,233,255,0.8)]" />
-            <span ref={ponteMm} className="absolute left-3 top-1 whitespace-nowrap rounded-md border border-ice/25 bg-ink/70 px-1.5 py-0.5 font-mono text-[9px] text-ice backdrop-blur-sm">
-              X 0.0
-            </span>
-          </div>
-
-          {/* máquinas: a lista vai duas vezes para a volta não ter emenda */}
+          {/* vitrine: a máquina da linha ativa e o índice das linhas */}
           <div
-            ref={trilho}
-            className="absolute bottom-[34px] left-0 flex w-max items-end will-change-transform motion-reduce:relative motion-reduce:w-full motion-reduce:overflow-x-auto md:bottom-[42px]"
+            className="hm-vitrine lg:col-span-7"
+            onPointerEnter={() => setParado(true)}
+            onPointerLeave={() => {
+              setParado(false)
+              mx.set(0)
+              my.set(0)
+            }}
+            onPointerMove={(e) => {
+              const r = e.currentTarget.getBoundingClientRect()
+              mx.set((e.clientX - r.left) / r.width - 0.5)
+              my.set((e.clientY - r.top) / r.height - 0.5)
+            }}
           >
-            {[...ESTEIRA, ...ESTEIRA].map((m, n) => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => onLinha(m.linha)}
-                tabIndex={n < ESTEIRA.length ? 0 : -1}
-                aria-hidden={n >= ESTEIRA.length || undefined}
-                aria-label={t("Ver {linha} no catálogo", { linha: t(m.cat.nome) })}
-                className="group relative flex w-[230px] shrink-0 cursor-pointer flex-col items-center px-4 [--p:0.4] md:w-[340px] md:px-6"
-              >
-                <span
-                  className="mb-3 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] transition-colors md:text-[11px]"
-                  style={{ opacity: "calc(0.35 + var(--p) * 0.65)" }}
-                >
-                  <span className="text-ice">{t(m.cat.nome)}</span>
-                  <span className="text-white/40">{m.cat.total}</span>
-                  <ArrowUpRight className="h-3 w-3 text-white/50 opacity-0 transition-opacity group-hover:opacity-100" />
-                </span>
-                <img
-                  src={m.img}
-                  alt=""
-                  loading={n < 4 ? "eager" : "lazy"}
-                  className="h-[150px] w-full origin-bottom object-contain drop-shadow-[0_22px_22px_rgba(0,0,0,0.6)] transition-[filter] duration-300 group-hover:drop-shadow-[0_22px_30px_rgba(143,233,255,0.25)] md:h-[230px]"
-                  style={{ transform: "scale(calc(0.72 + var(--p) * 0.34))", opacity: "calc(0.45 + var(--p) * 0.55)" }}
+            <div className="glass relative grid overflow-hidden rounded-[2rem] md:grid-cols-[1fr_17rem]">
+              {/* palco */}
+              <div className="relative h-[340px] overflow-hidden [perspective:1200px] md:h-[500px]">
+                <div className="blueprint pointer-events-none absolute inset-0 [background-size:32px_32px] [mask-image:radial-gradient(ellipse_at_50%_60%,black,transparent_75%)]" />
+                <motion.div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0"
+                  style={{ background: luz }}
                 />
-              </button>
-            ))}
-          </div>
 
-          {/* roletes da esteira, girando junto com as máquinas */}
-          <div className="absolute inset-x-0 bottom-0 h-[34px] border-t border-white/10 bg-ink/40 md:h-[42px]">
-            <div
-              ref={roletes}
-              className="absolute inset-x-0 top-2 h-3 [background-image:radial-gradient(circle_at_50%_50%,rgba(143,233,255,0.45)_0_2px,rgba(255,255,255,0.12)_2.5px_5.5px,transparent_6px)] [background-size:28px_12px] md:top-3"
-            />
-          </div>
-          {/* reflexo forte do vidro por cima de tudo */}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,transparent_20%,rgba(255,255,255,0.05)_30%,transparent_38%,transparent_62%,rgba(255,255,255,0.04)_70%,transparent_76%)]" />
-        </div>
-        </div>
+                {/* sombra no chão */}
+                <div className="pointer-events-none absolute bottom-[22%] left-1/2 h-10 w-[60%] -translate-x-1/2 rounded-[50%] bg-black/60 blur-2xl" />
 
-        {/* retalhos: peças na frente do vidro */}
-        <div className="pointer-events-none absolute inset-x-3 bottom-0 mx-auto max-w-[1600px] md:inset-x-8">
-          {RETALHOS.map((r) => (
-            <span key={r.img} data-prof={r.prof} className={`hm-retalho-rolagem absolute ${r.pos}`}>
-              <span data-prof={r.prof} className="hm-retalho-mouse block">
-                <img
-                  src={r.img}
-                  alt=""
-                  className={`hm-retalho vit-peca block w-auto drop-shadow-[0_18px_18px_rgba(0,0,0,0.65)] ${r.h}`}
-                  style={{ animationDelay: `${r.d}s` }}
-                />
-              </span>
-            </span>
-          ))}
-          <a
-            href="/pecas"
-            className="hm-retalho glass pointer-events-auto absolute -bottom-6 right-[4%] flex items-center gap-3 rounded-2xl py-2.5 pl-4 pr-3 transition-colors hover:border-ice/40 md:-bottom-7"
-          >
-            <span className="flex flex-col">
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-ice md:text-[10px]">{t("Peças")}</span>
-              <span className="text-xs text-white md:text-sm">{t("Peças a pronta entrega")}</span>
-            </span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink">
-              <ArrowUpRight className="h-4 w-4" />
-            </span>
-          </a>
+                {/* a máquina entra como se o vidro fosse cortado: um risco de luz atravessa e revela a foto */}
+                <motion.div className="absolute inset-x-4 bottom-[18%] top-[12%] md:inset-x-6" style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}>
+                  <AnimatePresence mode="popLayout" initial={false}>
+                    <motion.img
+                      key={linha.img}
+                      src={linha.img}
+                      alt={t(linha.cat.nome)}
+                      initial={reduzido ? { opacity: 0 } : { clipPath: "inset(0% 0% 0% 100%)", x: 40, scale: 0.94 }}
+                      animate={reduzido ? { opacity: 1 } : { clipPath: "inset(0% 0% 0% 0%)", x: 0, scale: 1 }}
+                      exit={reduzido ? { opacity: 0 } : { opacity: 0, x: -50, scale: 0.94, transition: { duration: 0.35 } }}
+                      transition={{ ...MOLA, clipPath: { duration: 0.7, ease: [0.65, 0, 0.35, 1] } }}
+                      className="absolute inset-0 h-full w-full object-contain drop-shadow-[0_30px_30px_rgba(0,0,0,0.55)]"
+                      draggable={false}
+                    />
+                  </AnimatePresence>
+                  {!reduzido && (
+                    <motion.span
+                      key={`risco-${ativo}`}
+                      aria-hidden="true"
+                      initial={{ left: "100%", opacity: 1 }}
+                      animate={{ left: "0%", opacity: [1, 1, 0] }}
+                      transition={{ duration: 0.7, ease: [0.65, 0, 0.35, 1], opacity: { duration: 0.9, times: [0, 0.75, 1] } }}
+                      className="pointer-events-none absolute -bottom-4 -top-4 w-[2px] bg-[linear-gradient(to_bottom,transparent,#ffffff_20%,var(--ice)_80%,transparent)] shadow-[0_0_18px_4px_rgba(143,233,255,0.55)]"
+                    />
+                  )}
+                </motion.div>
+
+                {/* legenda da linha ativa */}
+                <div className="absolute inset-x-6 bottom-5 flex items-end justify-between gap-4 md:inset-x-8 md:bottom-7">
+                  <div className="min-w-0 overflow-hidden">
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      <motion.div key={ativo} initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -24, opacity: 0 }} transition={MOLA}>
+                        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ice">
+                          {t("Linha")} {num(ativo)} · {linha.cat.total} {t(linha.cat.total === 1 ? "modelo" : "modelos")}
+                        </p>
+                        <p className="mt-1 line-clamp-2 font-wide text-xl leading-tight font-medium tracking-tight text-white md:text-2xl">{t(linha.cat.nome)}</p>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onLinha(linha.linha)}
+                    aria-label={t("Ver {linha} no catálogo", { linha: t(linha.cat.nome) })}
+                    className="group flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white text-ink transition-colors hover:bg-ice"
+                  >
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-500 ease-[cubic-bezier(.34,1.56,.64,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* índice das linhas: passar o mouse mostra, clicar abre no catálogo */}
+              <ol className="hm-indice flex gap-1 overflow-x-auto border-t border-white/10 p-2 [scrollbar-width:none] md:flex-col md:overflow-visible md:border-l md:border-t-0 md:p-3">
+                {LINHAS.map((l, i) => {
+                  const sel = i === ativo
+                  return (
+                    <li key={l.linha} className="shrink-0">
+                      <button
+                        type="button"
+                        onPointerEnter={() => setAtivo(i)}
+                        onFocus={() => setAtivo(i)}
+                        onClick={() => onLinha(l.linha)}
+                        aria-current={sel || undefined}
+                        aria-label={t("Ver {linha} no catálogo", { linha: t(l.cat.nome) })}
+                        className="relative flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-left md:py-[9px]"
+                      >
+                        {sel && (
+                          <motion.span layoutId="hm-ativo" transition={MOLA} className="absolute inset-0 overflow-hidden rounded-xl bg-white/[0.07] shadow-[inset_0_0_0_1px_rgba(143,233,255,0.18)]">
+                            {/* tempo até a próxima linha */}
+                            {!reduzido && !parado && naTela && (
+                              <motion.span
+                                key={ativo}
+                                className="absolute bottom-0 left-0 h-px bg-ice"
+                                initial={{ width: "0%" }}
+                                animate={{ width: "100%" }}
+                                transition={{ duration: INTERVALO, ease: "linear" }}
+                              />
+                            )}
+                          </motion.span>
+                        )}
+                        <span className={`relative font-mono text-[10px] transition-colors ${sel ? "text-ice" : "text-white/30"}`}>{num(i)}</span>
+                        <span className={`relative whitespace-nowrap text-[13px] transition-colors md:flex-1 md:truncate ${sel ? "text-white" : "text-white/55"}`}>
+                          {t(l.cat.nome)}
+                        </span>
+                        <span className={`relative hidden font-mono text-[10px] transition-colors md:inline ${sel ? "text-white/60" : "text-white/25"}`}>{l.cat.total}</span>
+                      </button>
+                    </li>
+                  )
+                })}
+                <li className="shrink-0 md:mt-auto md:border-t md:border-white/10 md:pt-2">
+                  <a href="/pecas" className="group flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] text-white/55 transition-colors hover:text-white">
+                    <span className="font-mono text-[10px] text-ice">+</span>
+                    <span className="whitespace-nowrap md:flex-1">{t("Peças a pronta entrega")}</span>
+                    <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </a>
+                </li>
+              </ol>
+            </div>
+          </div>
         </div>
       </div>
     </section>

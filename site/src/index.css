@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap");
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
@@ -33,9 +35,9 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --radius-lg: var(--radius);
-  --font-display: "Archivo", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "Clash Display", system-ui, sans-serif;
+  --font-sans: "Satoshi", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {
@@ -83,9 +85,7 @@ body {
 }
 
 .font-wide {
-  font-family: "Archivo", system-ui, sans-serif;
-  font-stretch: 125%;
-  font-variation-settings: "wdth" 125;
+  font-family: var(--font-display);
 }
 
 /* Superfície de vidro: blur + preenchimento + borda com luz no topo + sombra ambiente */
@@ -162,36 +162,26 @@ body {
   }
   .grain { display: none; }
 }
-/* Chapa de vidro da abertura do catálogo de máquinas */
-.vitrine-chapa {
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(143, 233, 255, 0.03) 40%, rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    inset 1px 0 0 rgba(255, 255, 255, 0.08),
-    inset 0 0 0 1px rgba(143, 233, 255, 0.1),
-    0 40px 80px -30px rgba(0, 0, 0, 0.7);
+
+/* Lugar do modelo 3D enquanto carrega: o diamante se desenha e se apaga em loop */
+.carregando-3d path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: c3d-traco 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
 }
-/* reflexo que passa pelo vidro de tempos em tempos */
-.vitrine-chapa::after {
-  content: "";
-  pointer-events: none;
-  position: absolute;
-  inset: -20%;
-  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.09) 48%, rgba(255, 255, 255, 0.02) 52%, transparent 58%);
-  transform: translateX(-60%);
-  animation: vitrine-reflexo 7s ease-in-out infinite;
+.carregando-3d path:nth-child(2) { animation-delay: 0.12s; }
+.carregando-3d path:nth-child(3) { animation-delay: 0.24s; }
+.carregando-3d path:nth-child(4) { animation-delay: 0.36s; }
+@keyframes c3d-traco {
+  0% { stroke-dashoffset: 1; }
+  45%, 60% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -1; }
 }
-@keyframes vitrine-reflexo {
-  0%, 55% { transform: translateX(-60%); }
-  85%, 100% { transform: translateX(60%); }
-}
-.vit-peca { animation: vit-peca 4.2s ease-in-out infinite; }
-@keyframes vit-peca {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-7px) rotate(2deg); }
+.carregando-3d-piso { animation: c3d-piso 2.4s ease-in-out infinite; }
+@keyframes c3d-piso {
+  0%, 100% { transform: scaleX(0.8); opacity: 0.4; }
+  50% { transform: scaleX(1); opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .vitrine-chapa::after, .vit-peca { animation: none; }
+  .carregando-3d path { animation: none; stroke-dashoffset: 0; }
 }

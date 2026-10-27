@@ -4,6 +4,7 @@ import { Environment, Float, Lightformer, MeshTransmissionMaterial } from "@reac
 import * as THREE from "three"
 import { pointer, prefersReducedMotion, scrollState } from "@/lib/motion"
 import { useCanvasNaTela } from "@/lib/webgl"
+import { Entrada, Pronto, useRevelar } from "./Revelar"
 
 /* ---------- Fundo: fachada de vidro em perspectiva, com reflexo passando pelos painéis ---------- */
 
@@ -390,11 +391,13 @@ export default function HeroScene() {
   const wrap = useRef<HTMLDivElement>(null)
   // acima da dobra: começa montado
   const { montar, vigiar } = useCanvasNaTela(wrap, { margem: "100px", inicial: true })
+  const { aoPronto, classe } = useRevelar(montar)
   const [mobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 768)
   const reduced = prefersReducedMotion()
 
   return (
-    <div ref={wrap} className="absolute inset-0" aria-hidden="true">
+    <div ref={wrap} className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,#0b2a5c,#05080f_60%)]" aria-hidden="true">
+      <div className={`absolute inset-0 ${classe}`}>
       {montar && (
         <Canvas
           dpr={[1, mobile ? 1.5 : 1.75]}
@@ -411,9 +414,13 @@ export default function HeroScene() {
           <StudioLights />
           <Dust count={mobile ? 260 : 650} />
           <Shards count={mobile ? 7 : 14} />
-          <Diamond mobile={mobile} />
+          <Entrada animado={!reduced} de={0.7} queda={0.6} giro={1.2}>
+            <Diamond mobile={mobile} />
+          </Entrada>
+          <Pronto aoPronto={aoPronto} />
         </Canvas>
       )}
+      </div>
     </div>
   )
 }
